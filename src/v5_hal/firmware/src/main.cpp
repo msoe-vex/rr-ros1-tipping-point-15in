@@ -48,14 +48,14 @@ void initialize() {
 
 	controller = new ControllerNode(node_manager, "controller");
 
-	left_1_motor = new MotorNode(node_manager, 5,"left_1_motor", false);
-	left_2_motor = new MotorNode(node_manager, 17,"left_2_motor", true);
-	left_3_motor = new MotorNode(node_manager, 2,"left_3_motor", true);
-	left_4_motor = new MotorNode(node_manager, 4,"left_4_motor", false);
-	right_1_motor = new MotorNode(node_manager, 1,"right_1_motor", true);
-	right_2_motor = new MotorNode(node_manager, 18,"right_2_motor", false);
-	right_3_motor = new MotorNode(node_manager, 16,"right_3_motor", false);
-	right_4_motor = new MotorNode(node_manager, 3,"right_4_motor", true);
+	left_1_motor = new MotorNode(node_manager, 20,"left_1_motor", false); //top
+	left_2_motor = new MotorNode(node_manager, 16,"left_2_motor", true); //bottom
+	left_3_motor = new MotorNode(node_manager, 19,"left_3_motor", true); //bottom
+	left_4_motor = new MotorNode(node_manager, 14,"left_4_motor", false); //top
+	right_1_motor = new MotorNode(node_manager, 18,"right_1_motor", true); //top
+	right_2_motor = new MotorNode(node_manager, 13,"right_2_motor", false); //bottom
+	right_3_motor = new MotorNode(node_manager, 17,"right_3_motor", false); //bottom
+	right_4_motor = new MotorNode(node_manager, 15,"right_4_motor", true); //top
 
 	TankDriveNode::TankEightMotors tank_motors = {
 		left_1_motor,
@@ -87,9 +87,9 @@ void initialize() {
 	
 	left_motor_lift = new MotorNode(node_manager, 8, "left_motor_lift", false);
 	right_motor_lift = new MotorNode(node_manager, 9, "right_motor_lift", true);
-	bottom_limit_switch_lift = new ADIDigitalInNode(node_manager, 7, "bottom_limit_switch_lift");
-	top_limit_switch_lift = new ADIDigitalInNode(node_manager, 6, "top_limit_switch_lift");
-	potentiometer_lift = new ADIAnalogInNode(node_manager, 8, "potentiometer_lift", false);
+	//bottom_limit_switch_lift = new ADIDigitalInNode(node_manager, 7, "bottom_limit_switch_lift");
+	//top_limit_switch_lift = new ADIDigitalInNode(node_manager, 6, "top_limit_switch_lift");
+	//potentiometer_lift = new ADIAnalogInNode(node_manager, 8, "potentiometer_lift", false);
 
 	lift_node = new LiftNode(node_manager, "lift_node", 
         controller, left_motor_lift, 

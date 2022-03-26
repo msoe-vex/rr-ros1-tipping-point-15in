@@ -64,8 +64,6 @@
 #include "nodes/auton_nodes/AutonManagerNode.h"
 #include "auton/auton_actions/DeployAction.h"
 #include "nodes/TankDriveNode.h"
-//#include "nodes/BackClawNode.h"
-//#include "nodes/PrimaryClawNode.h"
 #include "nodes/ClawNode.h"
 #include "nodes/LiftNode.h"
 

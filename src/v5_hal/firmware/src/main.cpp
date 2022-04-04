@@ -29,6 +29,9 @@ ADIDigitalInNode* bottom_limit_switch_lift;
 ADIDigitalInNode* top_limit_switch_lift;
 ADIAnalogInNode* potentiometer_lift;
 
+MotorNode* intakeMotor;
+IntakeNode* intakeNode;
+
 // Declare all robot nodes here:
 
 /**
@@ -104,6 +107,9 @@ void initialize() {
 	back_claw_piston = new ADIDigitalOutNode(node_manager, "back_claw_piston", 2, false);
 
 	back_claw = new ClawNode(node_manager, "secondary_claw", controller, back_claw_piston, pros::E_CONTROLLER_DIGITAL_R2);
+
+	intakeMotor = new MotorNode(node_manager, 6, "intake_motor", false);
+	intakeNode = new IntakeNode(node_manager, "intake_node", controller, intakeMotor);
 
 	// Initialize the autonomous manager
 	auton_manager_node = new AutonManagerNode(node_manager, tank_drive_node, primary_claw);

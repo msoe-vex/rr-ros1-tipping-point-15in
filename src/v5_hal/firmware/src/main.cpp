@@ -16,8 +16,8 @@ MotorNode* right_2_motor;
 MotorNode* right_3_motor;
 MotorNode* right_4_motor;
 
-ClawNode* primary_claw;
-ADIDigitalOutNode* primary_claw_piston;
+ClawNode* front_claw;
+ADIDigitalOutNode* front_claw_piston;
 
 ClawNode* back_claw;
 ADIDigitalOutNode* back_claw_piston;
@@ -97,16 +97,16 @@ void initialize() {
 		top_limit_switch_lift, potentiometer_lift
 	);
 
-	primary_claw_piston = new ADIDigitalOutNode(node_manager, "primary_claw_piston", 1, false);
+	front_claw_piston = new ADIDigitalOutNode(node_manager, "front_claw_piston", 1, false);
 
-	primary_claw = new ClawNode(node_manager, "primary_claw", controller, primary_claw_piston, pros::E_CONTROLLER_DIGITAL_R1);
+	front_claw = new ClawNode(node_manager, "front_claw", controller, front_claw_piston, pros::E_CONTROLLER_DIGITAL_R1);
 
 	back_claw_piston = new ADIDigitalOutNode(node_manager, "back_claw_piston", 2, false);
 
 	back_claw = new ClawNode(node_manager, "secondary_claw", controller, back_claw_piston, pros::E_CONTROLLER_DIGITAL_R2);
 
 	// Initialize the autonomous manager
-	auton_manager_node = new AutonManagerNode(node_manager, tank_drive_node, primary_claw);
+	auton_manager_node = new AutonManagerNode(node_manager, tank_drive_node, lift_node, front_claw, back_claw);
 
 	// Call the node manager to initialize all of the nodes above
 	node_manager->initialize();

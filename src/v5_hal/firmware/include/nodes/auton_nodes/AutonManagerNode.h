@@ -10,14 +10,17 @@
 class AutonManagerNode : public Node {
 private:
     IDriveNode* m_drive_node;
-    IClawNode* m_claw_node;
+    ILiftNode* m_lift_node;
+    IClawNode* m_front_claw_node;
+    IClawNode* m_front_claw_node;
+
 
     Auton* m_test_path_auton;
     Auton* m_prog_skills;
     Auton* m_basic_auton;
 
 public:
-    AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, IClawNode* claw_node);
+    AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, ILiftNode* lift_node, IClawNode* front_claw_node, IClawNode* back_claw_node, IntakeNode*);
 
     Auton* selected_auton;
 

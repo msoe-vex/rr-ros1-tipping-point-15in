@@ -2,12 +2,13 @@
 
 #include "lib-rr/nodes/NodeManager.h"
 #include "api.h"
+#include "lib-rr/nodes/subsystems/IIntakeNode.h"
 #include "lib-rr/nodes/actuator_nodes/MotorNode.h"
 #include "lib-rr/nodes/sensor_nodes/ControllerNode.h"
 #include "lib-rr/nodes/actuator_nodes/ADIDigitalOutNode.h"
 #include "lib-rr/util/Constants.h"
 
-class IntakeNode : public Node {
+class IntakeNode : public IIntakeNode {
 private:
     pros::Controller* m_controller;
     MotorNode* m_left_intake;

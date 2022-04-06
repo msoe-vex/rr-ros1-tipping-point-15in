@@ -6,6 +6,8 @@
 #include "lib-rr/auton/auton_routines/TestPoseAuton.h"
 #include "lib-rr/auton/auton_routines/TestTurnAuton.h"
 #include "auton/auton_routines/BasicAuton.h"
+#include "lib-rr/nodes/subsystems/IClawNode.h"
+#include "lib-rr/nodes/subsystems/ILiftNode.h"
 #include "lib-rr/pathing/PathManager.h"
 
 class AutonManagerNode : public Node {

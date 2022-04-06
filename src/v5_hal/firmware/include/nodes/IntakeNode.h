@@ -5,9 +5,10 @@
 #include "lib-rr/nodes/actuator_nodes/MotorNode.h"
 #include "lib-rr/nodes/sensor_nodes/ControllerNode.h"
 #include "lib-rr/nodes/actuator_nodes/ADIDigitalOutNode.h"
+
 #include "lib-rr/util/Constants.h"
 
-class IntakeNode : public IIntakeNode {
+class IntakeNode : public Node {
 private:
     pros::Controller* m_controller;
     MotorNode* m_intake;

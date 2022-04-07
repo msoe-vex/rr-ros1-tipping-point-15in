@@ -32,6 +32,13 @@ ADIAnalogInNode* liftPotentiometer;
 MotorNode* intakeMotor;
 IntakeNode* intakeNode;
 
+ADIEncoderNode* y_odom_encoder;
+ADIEncoderNode* x_odom_encoder;
+
+InertialSensorNode* inertialSensor;
+
+OdometryNode* odomNode;
+
 // Declare all robot nodes here:
 
 /**
@@ -48,8 +55,16 @@ void initialize() {
 	Logger::giveNodeManager(nodeManager);
 
 	// Initialize all robot nodes here:
-
 	controller = new ControllerNode(nodeManager, "controller");
+
+	/* Define the odometry components */
+	x_odom_encoder = new ADIEncoderNode(nodeManager, 'A', 'B', "xOdomEncoder", false);
+	y_odom_encoder = new ADIEncoderNode(nodeManager, 'C', 'D', "yOdomEncoder", false);
+
+	inertialSensor = new InertialSensorNode(nodeManager, "inertialSensor", 14);
+
+	odomNode = new OdometryNode(nodeManager, "odometry", x_odom_encoder, 
+	y_odom_encoder, inertialSensor, OdometryNode::FOLLOWER);
 
 	leftFrontTopMotor = new MotorNode(nodeManager, 19, "leftFrontTopMotor", false); //top
 	leftFrontBottomMotor = new MotorNode(nodeManager, 20, "leftFrontBottomMotor", true); //bottom
@@ -77,9 +92,9 @@ void initialize() {
 	};
 
 	EncoderConfig encoderConfig = {
-		0,
-		900,
-		4.0
+		0, // Initial ticks
+		2400, // Ticks per RPM
+		1.975 // Wheel diameter
 	};
 
 	TankDriveKinematics tankKinematics(encoderConfig, wheelLocations);
@@ -112,7 +127,7 @@ void initialize() {
 	intakeNode = new IntakeNode(nodeManager, "intake_node", controller, intakeMotor);
 
 	// Initialize the autonomous manager
-	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, liftNode, frontClaw, backClaw);
+	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor);
 
 	// Call the node manager to initialize all of the nodes above
 	nodeManager->initialize();

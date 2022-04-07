@@ -96,8 +96,7 @@ void initialize() {
 
 	lift_node = new LiftNode(node_manager, "lift_node", 
         controller, left_motor_lift, 
-        right_motor_lift, bottom_limit_switch_lift, 
-		top_limit_switch_lift, potentiometer_lift
+        right_motor_lift
 	);
 
 	front_claw_piston = new ADIDigitalOutNode(node_manager, "front_claw_piston", 1, false);

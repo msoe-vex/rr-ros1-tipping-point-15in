@@ -22,6 +22,9 @@ ADIDigitalOutNode* frontClawPiston;
 ClawNode* backClaw;
 ADIDigitalOutNode* backClawPiston;
 
+ClawNode* backTilt;
+ADIDigitalOutNode* backTiltPiston;
+
 LiftNode* liftNode;
 MotorNode* leftLiftMotor;
 MotorNode* rightLiftMotor;
@@ -61,19 +64,19 @@ void initialize() {
 	x_odom_encoder = new ADIEncoderNode(nodeManager, 'A', 'B', "xOdomEncoder", false);
 	y_odom_encoder = new ADIEncoderNode(nodeManager, 'C', 'D', "yOdomEncoder", false);
 
-	inertialSensor = new InertialSensorNode(nodeManager, "inertialSensor", 14);
+	inertialSensor = new InertialSensorNode(nodeManager, "inertialSensor", 8);
 
 	odomNode = new OdometryNode(nodeManager, "odometry", x_odom_encoder, 
 	y_odom_encoder, inertialSensor, OdometryNode::FOLLOWER);
 
 	leftFrontTopMotor = new MotorNode(nodeManager, 19, "leftFrontTopMotor", false); //top
 	leftFrontBottomMotor = new MotorNode(nodeManager, 20, "leftFrontBottomMotor", true); //bottom
-	leftRearTopMotor = new MotorNode(nodeManager, 14, "leftRearTopMotor", true); //bottom
-	leftRearBottomMotor = new MotorNode(nodeManager, 13, "leftRearBottomMotor", false); //top
+	leftRearTopMotor = new MotorNode(nodeManager, 14, "leftRearTopMotor", false); //bottom
+	leftRearBottomMotor = new MotorNode(nodeManager, 13, "leftRearBottomMotor", true); //top
 	rightFrontTopMotor = new MotorNode(nodeManager, 16, "rightFrontTopMotor", true); //top
 	rightFrontBottomMotor = new MotorNode(nodeManager, 15, "rightFrontBottomMotor", false); //bottom
-	rightRearTopMotor = new MotorNode(nodeManager, 12, "rightRearTopMotor", false); //bottom
-	rightRearBottomMotor = new MotorNode(nodeManager, 11, "rightRearBottomMotor", true); //top
+	rightRearTopMotor = new MotorNode(nodeManager, 12, "rightRearTopMotor", true); //bottom
+	rightRearBottomMotor = new MotorNode(nodeManager, 1, "rightRearBottomMotor", false); //top
 
 	TankDriveNode::TankEightMotors tankMotors = {
 		leftFrontTopMotor,
@@ -99,32 +102,35 @@ void initialize() {
 
 	TankDriveKinematics tankKinematics(encoderConfig, wheelLocations);
 
-	tankDriveNode = new TankDriveNode(nodeManager, "tank_drive_node", controller, 
+	tankDriveNode = new TankDriveNode(nodeManager, "tankDriveNode", controller, 
         tankMotors, tankKinematics
 	);
 	
-	leftLiftMotor = new MotorNode(nodeManager, 8, "left_motor_lift", false);
-	rightLiftMotor = new MotorNode(nodeManager, 9, "right_motor_lift", true);
+	leftLiftMotor = new MotorNode(nodeManager, 18, "leftLiftMotor", false);
+	rightLiftMotor = new MotorNode(nodeManager, 17, "rightLiftMotor", true);
 	//bottom_limit_switch_lift = new ADIDigitalInNode(node_manager, 7, "bottom_limit_switch_lift");
 	//top_limit_switch_lift = new ADIDigitalInNode(node_manager, 6, "top_limit_switch_lift");
 	//potentiometer_lift = new ADIAnalogInNode(node_manager, 8, "potentiometer_lift", false);
 
-	liftNode = new LiftNode(nodeManager, "lift_node", 
+	liftNode = new LiftNode(nodeManager, "liftNode", 
         controller, leftLiftMotor, 
         rightLiftMotor, bottomLiftLimitSwitch, 
 		topLiftLimitSwitch, liftPotentiometer
 	);
 
-	frontClawPiston = new ADIDigitalOutNode(nodeManager, "front_claw_piston", 1, false);
+	frontClawPiston = new ADIDigitalOutNode(nodeManager, "frontClawPiston", 'G', false);
 
-	frontClaw = new ClawNode(nodeManager, "front_claw", controller, frontClawPiston, pros::E_CONTROLLER_DIGITAL_R1);
+	frontClaw = new ClawNode(nodeManager, "frontClaw", controller, frontClawPiston, pros::E_CONTROLLER_DIGITAL_B);
 
-	backClawPiston = new ADIDigitalOutNode(nodeManager, "back_claw_piston", 2, false);
+	backClawPiston = new ADIDigitalOutNode(nodeManager, "backClawPiston", 'E', false);
 
-	backClaw = new ClawNode(nodeManager, "secondary_claw", controller, backClawPiston, pros::E_CONTROLLER_DIGITAL_R2);
+	backClaw = new ClawNode(nodeManager, "backClaw", controller, backClawPiston, pros::E_CONTROLLER_DIGITAL_LEFT);
 
-	intakeMotor = new MotorNode(nodeManager, 6, "intake_motor", false);
-	intakeNode = new IntakeNode(nodeManager, "intake_node", controller, intakeMotor);
+	backTiltPiston = new ADIDigitalOutNode(nodeManager, "backTiltPiston", 'F', false);
+	backTilt = new ClawNode(nodeManager, "backTilt", controller, backTiltPiston, pros::E_CONTROLLER_DIGITAL_DOWN);
+
+	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);
+	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, intakeMotor);
 
 	// Initialize the autonomous manager
 	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor);

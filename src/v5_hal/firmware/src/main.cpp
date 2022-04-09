@@ -61,8 +61,8 @@ void initialize() {
 	controller = new ControllerNode(nodeManager, "controller");
 
 	/* Define the odometry components */
-	x_odom_encoder = new ADIEncoderNode(nodeManager, 'A', 'B', "xOdomEncoder", false);
-	y_odom_encoder = new ADIEncoderNode(nodeManager, 'C', 'D', "yOdomEncoder", false);
+	x_odom_encoder = new ADIEncoderNode(nodeManager, 'C', 'D', "xOdomEncoder", false);
+	y_odom_encoder = new ADIEncoderNode(nodeManager, 'A', 'B', "yOdomEncoder", false);
 
 	inertialSensor = new InertialSensorNode(nodeManager, "inertialSensor", 8);
 

@@ -96,8 +96,8 @@ void initialize() {
 
 	EncoderConfig encoderConfig = {
 		0, // Initial ticks
-		2400, // Ticks per RPM
-		1.975 // Wheel diameter
+		900., // Ticks per RPM
+		3.25 // Wheel diameter
 	};
 
 	TankDriveKinematics tankKinematics(encoderConfig, wheelLocations);

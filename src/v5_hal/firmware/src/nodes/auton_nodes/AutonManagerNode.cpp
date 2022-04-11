@@ -5,7 +5,7 @@ AutonManagerNode::AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_
         m_drive_node(drive_node),
         m_odom_node(odom_node),
         m_inertial_sensor_node(inertial_sensor_node) {
-    m_test_auton = new TestPathAuton(m_drive_node, m_odom_node);
+    m_test_auton = new TestTankPathAuton(m_drive_node, m_odom_node);
     selected_auton = m_test_auton;
 }
 

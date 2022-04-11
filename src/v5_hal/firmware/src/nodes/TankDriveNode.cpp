@@ -92,6 +92,8 @@ void TankDriveNode::setDriveVelocity(float y_velocity, float theta_velocity) {
     IDriveKinematics::FourMotorPercentages motor_percentages = 
         m_kinematics.inverseKinematics(0, y_velocity, theta_velocity, MAX_VELOCITY);
 
+    //std::cout << "Left: " << motor_percentages.left_front_percent << " | Right: " << motor_percentages.right_front_percent << std::endl;
+
     m_setLeftVelocity(motor_percentages.left_front_percent * MAX_VELOCITY);
     m_setRightVelocity(motor_percentages.right_front_percent * MAX_VELOCITY);
 }

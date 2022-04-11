@@ -5,6 +5,7 @@
 #include "lib-rr/auton/auton_routines/TestPathAuton.h"
 #include "lib-rr/auton/auton_routines/TestPoseAuton.h"
 #include "lib-rr/auton/auton_routines/TestTurnAuton.h"
+#include "lib-rr/auton/auton_routines/TestTankPathAuton.h"
 #include "auton/auton_routines/BasicAuton.h"
 #include "lib-rr/nodes/subsystems/IClawNode.h"
 #include "lib-rr/nodes/subsystems/ILiftNode.h"

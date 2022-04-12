@@ -9,11 +9,11 @@ void DeployAction::ActionInit() {
 }
 
 AutonAction::actionStatus DeployAction::Action() {
-    if (m_timer.Get() > 0.5) {
-        return END;
-    }
+    // if (m_timer.Get() > 0.5) {
+    //     return END;
+    // }
 
-    return CONTINUE;
+    return END;
 }
 
 void DeployAction::ActionEnd() {

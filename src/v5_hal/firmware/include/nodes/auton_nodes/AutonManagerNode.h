@@ -6,6 +6,7 @@
 #include "lib-rr/auton/auton_routines/TestPoseAuton.h"
 #include "lib-rr/auton/auton_routines/TestTurnAuton.h"
 #include "lib-rr/auton/auton_routines/TestTankPathAuton.h"
+#include "lib-rr/auton/auton_routines/TestBasicGoalAuton.h"
 #include "auton/auton_routines/BasicAuton.h"
 #include "lib-rr/nodes/subsystems/IClawNode.h"
 #include "lib-rr/nodes/subsystems/ILiftNode.h"
@@ -27,7 +28,8 @@ private:
     Auton* m_test_auton;
 
 public:
-    AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, InertialSensorNode* inertial_sensor_node);
+    AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, 
+        InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node);
 
     Auton* selected_auton;
 

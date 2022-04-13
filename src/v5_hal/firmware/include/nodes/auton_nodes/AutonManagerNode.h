@@ -9,6 +9,7 @@
 #include "lib-rr/auton/auton_routines/TestBasicGoalAuton.h"
 #include "auton/auton_routines/BasicAuton.h"
 #include "auton/auton_routines/MatchAuton.h"
+#include "auton/auton_routines/tuningRoutine.h"
 #include "lib-rr/nodes/subsystems/IClawNode.h"
 #include "lib-rr/nodes/subsystems/ILiftNode.h"
 #include "auton/auton_routines/odomTest.h"
@@ -23,10 +24,8 @@ private:
     OdometryNode* m_odom_node;
     InertialSensorNode* m_inertial_sensor_node;
 
-
-    Auton* m_test_path_auton;
-    Auton* m_prog_skills;
-    Auton* m_test_auton;
+    Auton* m_matchAuton;
+    Auton* m_tuningAuton;
 
 public:
     AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, 

@@ -8,8 +8,9 @@ AutonManagerNode::AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_
         m_inertial_sensor_node(inertial_sensor_node),
         m_front_claw_node(front_claw_node),
         m_lift_node(lift_node) {
-    m_test_auton = new MatchAuton(m_drive_node, m_odom_node, m_front_claw_node, m_lift_node);
-    selected_auton = m_test_auton;
+    m_matchAuton = new MatchAuton(m_drive_node, m_odom_node, m_front_claw_node, m_lift_node);
+    m_tuningAuton = new tuningRoutine(m_drive_node);
+    selected_auton = m_matchAuton;
 }
 
 void AutonManagerNode::initialize() {

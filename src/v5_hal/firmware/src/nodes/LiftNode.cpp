@@ -11,7 +11,8 @@ LiftNode::LiftNode(NodeManager* node_manager, std::string handle_name,
         m_bottom_limit_switch(bottom_limit_switch),
         m_top_limit_switch(top_limit_switch),
         m_potentiometer(potentiometer),
-        m_lift_pid(0.03, 0., 0., 2) {
+        m_lift_pid(0.03, 0., 0., 2), 
+        m_position(0) {
 
 }
 
@@ -31,10 +32,7 @@ void LiftNode::setLiftVelocity(int velocity) {
 };
 
 void LiftNode::setLiftPosition(int position) {
-    // int currentPosition = m_potentiometer->getValue();
-    // int errorPosition = position - currentPosition;
-    // float lift_feedback = m_lift_pid->calculate(errorPosition);
-    // problems: need to work logic into periodic loop that runs on the robot, allow the robot to run the pid periodically check and update the error
+    m_position = position;
 };
 
 int LiftNode::getPosition() {
@@ -57,7 +55,10 @@ void LiftNode::teleopPeriodic() {
 };
 
 void LiftNode::autonPeriodic() {
-
+    int currentPosition = m_potentiometer->getValue();
+    int errorPosition = m_position - currentPosition;
+    float lift_feedback = m_lift_pid.calculate(errorPosition);
+    setLiftVelocity(lift_feedback);
 };
 
 LiftNode::~LiftNode() {

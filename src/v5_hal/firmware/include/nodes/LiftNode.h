@@ -20,6 +20,8 @@ private:
 
     PID m_lift_pid;
 
+    int m_position;
+
 public:
     LiftNode(NodeManager* node_manager, std::string handle_name, 
         ControllerNode* controller, MotorNode* left_motor, 

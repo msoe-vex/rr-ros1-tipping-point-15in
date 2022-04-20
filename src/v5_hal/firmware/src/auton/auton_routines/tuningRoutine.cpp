@@ -8,7 +8,7 @@ tuningRoutine::tuningRoutine(IDriveNode* drive_node, OdometryNode* odometry_node
 }
 
 void tuningRoutine::AddNodes() {
-    m_forward_node = new AutonNode(10, new DriveStraightAction(m_drive_node, m_odometry_node, 60, 40, 20));
+    m_forward_node = new AutonNode(10, new DriveStraightAction(m_drive_node, m_odometry_node, 60, 100, 100));
     Auton::AddFirstNode(m_forward_node);
 
     //m_backward_node = new AutonNode(10, new DriveStraightAction(m_drive_node, 800, 10000, 10000));

@@ -1,5 +1,5 @@
-# rr-ros1-robot-code-template
-This repository serves as a template for creating robot code utilizing our ROS 1 build system.
+# rr-ros1-tipping-point
+This repository serves as the code that runs on our 15in robot during competition.
 
 ## Development Instructions
 Clone the repository, and run `git submodule update --init --recursive`

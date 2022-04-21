@@ -2,10 +2,10 @@
 
 BackClawNode::BackClawNode(NodeManager* node_manager, std::string handle_name,
         ControllerNode* controller, pros::controller_digital_e_t pivotButton, 
-        pros::controller_digital_e_t clawButton, ADIDigitalOutNode* pivot
+        pros::controller_digital_e_t clawButton, ADIDigitalOutNode* pivot,
         ADIDigitalOutNode* claw) : Node(node_manager, 5),
         m_controller(controller->getController()),
-        m_pivotButton(pivotButtton),
+        m_pivotButton(pivotButton),
         m_clawButton(clawButton),
         m_pivot(pivot),
         m_claw(claw) {

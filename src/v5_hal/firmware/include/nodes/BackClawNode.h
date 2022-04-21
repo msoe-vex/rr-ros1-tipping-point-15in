@@ -10,11 +10,11 @@ class BackClawNode : public Node {
 public:
     enum BackClawState {
         PIVOT_BACK, PIVOT_DOWN_CLAW_OPEN, PIVOT_DOWN_CLAW_CLOSED
-    }
+    };
 
     BackClawNode(NodeManager* node_manager, std::string handle_name,
         ControllerNode* controller, pros::controller_digital_e_t pivotButton, 
-        pros::controller_digital_e_t clawButton, ADIDigitalOutNode* pivot
+        pros::controller_digital_e_t clawButton, ADIDigitalOutNode* pivot,
         ADIDigitalOutNode* claw);
 
     void initialize();
@@ -34,7 +34,7 @@ public:
 private:
     BackClawState m_state;
 
-    ControllerNode* m_controller;
+    pros::Controller* m_controller;
     pros::controller_digital_e_t m_pivotButton;
     pros::controller_digital_e_t m_clawButton;
     ADIDigitalOutNode* m_pivot;
@@ -46,4 +46,4 @@ private:
     bool m_clawButtonPreviousState = false;
 
     void periodic();
-}
+};

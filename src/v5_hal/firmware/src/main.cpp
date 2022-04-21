@@ -94,8 +94,8 @@ void initialize() {
 
 	EncoderConfig encoderConfig = {
 		0, // Initial ticks
-		2400, // Ticks per RPM
-		1.975 // Wheel diameter
+		900., // Ticks per RPM
+		3.25 // Wheel diameter
 	};
 
 	TankDriveKinematics tankKinematics(encoderConfig, wheelLocations);
@@ -117,7 +117,6 @@ void initialize() {
 	);
 
 	frontClawPiston = new ADIDigitalOutNode(nodeManager, "frontClawPiston", 'G', false);
-
 	frontClaw = new ClawNode(nodeManager, "frontClaw", controller, frontClawPiston, pros::E_CONTROLLER_DIGITAL_B);
 
 	backClawPiston = new ADIDigitalOutNode(nodeManager, "backClawPiston", 'E', false);
@@ -131,7 +130,7 @@ void initialize() {
 	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, intakeMotor);
 
 	// Initialize the autonomous manager
-	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor);
+	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor, frontClaw, liftNode);
 
 	// Call the node manager to initialize all of the nodes above
 	nodeManager->initialize();

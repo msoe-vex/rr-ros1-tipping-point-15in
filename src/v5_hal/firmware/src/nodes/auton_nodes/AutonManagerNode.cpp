@@ -9,7 +9,7 @@ AutonManagerNode::AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_
         m_front_claw_node(front_claw_node),
         m_liftNode(liftNode) {
     m_matchAuton = new MatchAuton(m_drive_node, m_odom_node, m_front_claw_node, m_liftNode);
-    m_tuningAuton = new tuningRoutine(m_drive_node);
+    m_tuningAuton = new tuningRoutine(m_drive_node, m_odom_node);
     m_testAuton = new testAuton(m_liftNode);
     selected_auton = m_matchAuton;
 }

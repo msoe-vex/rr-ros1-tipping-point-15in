@@ -111,7 +111,6 @@ void TankDriveNode::teleopPeriodic() {
 
     setLeftVoltage(copysign(max(min(fabs(left) / 127.0, 127.0), 0.0) * MAX_MOTOR_VOLTAGE, left));
     setRightVoltage(copysign(max(min(fabs(right) / 127.0, 127.0), 0.0) * MAX_MOTOR_VOLTAGE, right));
-    std::cout << "Encoder Value: " << getIntegratedEncoderVals().left_front_encoder_val << std::endl;
 }
 
 void TankDriveNode::autonPeriodic() {

@@ -2,6 +2,7 @@
 
 #include "lib-rr/auton/Auton.h"
 #include "lib-rr/nodes/subsystems/IDriveNode.h"
+#include "lib-rr/nodes/odometry_nodes/OdometryNode.h"
 #include "lib-rr/nodes/sensor_nodes/InertialSensorNode.h"
 #include "lib-rr/auton/auton_actions/DriveStraightAction.h"
 #include "lib-rr/util/Constants.h"

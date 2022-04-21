@@ -19,11 +19,9 @@ MotorNode* rightRearBottomMotor;
 ClawNode* frontClaw;
 ADIDigitalOutNode* frontClawPiston;
 
-ClawNode* backClaw;
+BackClawNode* backClaw;
 ADIDigitalOutNode* backClawPiston;
-
-ClawNode* backTilt;
-ADIDigitalOutNode* backTiltPiston;
+ADIDigitalOutNode* backPivotPiston;
 
 LiftNode* liftNode;
 MotorNode* leftLiftMotor;
@@ -121,11 +119,12 @@ void initialize() {
 	frontClawPiston = new ADIDigitalOutNode(nodeManager, "frontClawPiston", 'G', false);
 	frontClaw = new ClawNode(nodeManager, "frontClaw", controller, frontClawPiston, pros::E_CONTROLLER_DIGITAL_B);
 
-	backClawPiston = new ADIDigitalOutNode(nodeManager, "backClawPiston", 'E', false);
-	backClaw = new ClawNode(nodeManager, "backClaw", controller, backClawPiston, pros::E_CONTROLLER_DIGITAL_LEFT);
+	backClawPiston = new ADIDigitalOutNode(nodeManager, "backClawPiston", 'F', false);
 
-	backTiltPiston = new ADIDigitalOutNode(nodeManager, "backTiltPiston", 'F', false);
-	backTilt = new ClawNode(nodeManager, "backTilt", controller, backTiltPiston, pros::E_CONTROLLER_DIGITAL_DOWN);
+	backPivotPiston = new ADIDigitalOutNode(nodeManager, "backPivotPiston", 'E', false);
+
+	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_DOWN, 
+		pros::E_CONTROLLER_DIGITAL_LEFT, backPivotPiston, backClawPiston);
 
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);
 	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, intakeMotor);

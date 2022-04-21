@@ -37,6 +37,14 @@ public:
 
     void setDriveVelocity(float x_velocity, float y_velocity, float theta_velocity);
 
+    void setLeftVoltage(int voltage);
+
+    void setRightVoltage(int voltage);
+
+    void setLeftVelocity(float velocity);
+
+    void setRightVelocity(float velocity);
+
     void teleopPeriodic();
 
     void autonPeriodic();
@@ -57,12 +65,4 @@ private:
     void m_setLeftPosition(float distance, int max_velocity);
 
     void m_setRightPosition(float distance, int max_velocity);
-
-    void m_setLeftVoltage(int voltage);
-
-    void m_setRightVoltage(int voltage);
-
-    void m_setLeftVelocity(float velocity);
-
-    void m_setRightVelocity(float velocity);
 };

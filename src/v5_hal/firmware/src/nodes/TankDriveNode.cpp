@@ -23,28 +23,28 @@ void TankDriveNode::m_setRightPosition(float distance, int max_velocity) {
     m_motors.right_4_motor->moveAbsolute(distance, max_velocity);
 }
 
-void TankDriveNode::m_setLeftVoltage(int voltage) {
+void TankDriveNode::setLeftVoltage(int voltage) {
     m_motors.left_1_motor->moveVoltage(voltage);
     m_motors.left_2_motor->moveVoltage(voltage);
     m_motors.left_3_motor->moveVoltage(voltage);
     m_motors.left_4_motor->moveVoltage(voltage);
 }
 
-void TankDriveNode::m_setRightVoltage(int voltage) {
+void TankDriveNode::setRightVoltage(int voltage) {
     m_motors.right_1_motor->moveVoltage(voltage);
     m_motors.right_2_motor->moveVoltage(voltage);
     m_motors.right_3_motor->moveVoltage(voltage);
     m_motors.right_4_motor->moveVoltage(voltage);
 }
 
-void TankDriveNode::m_setLeftVelocity(float velocity) {
+void TankDriveNode::setLeftVelocity(float velocity) {
     m_motors.left_1_motor->moveVelocity(velocity);
     m_motors.left_2_motor->moveVelocity(velocity);
     m_motors.left_3_motor->moveVelocity(velocity);
     m_motors.left_4_motor->moveVelocity(velocity);
 }
 
-void TankDriveNode::m_setRightVelocity(float velocity) {
+void TankDriveNode::setRightVelocity(float velocity) {
     m_motors.right_1_motor->moveVelocity(velocity);
     m_motors.right_2_motor->moveVelocity(velocity);
     m_motors.right_3_motor->moveVelocity(velocity);
@@ -80,8 +80,8 @@ void TankDriveNode::initialize() {
 void TankDriveNode::setDriveVoltage(int y_voltage, int theta_voltage) {
     IDriveKinematics::FourMotorPercentages motor_percentages = m_kinematics.inverseKinematics(0, y_voltage, theta_voltage, MAX_MOTOR_VOLTAGE);
 
-    m_setLeftVoltage(motor_percentages.left_front_percent * MAX_MOTOR_VOLTAGE);
-    m_setRightVoltage(motor_percentages.right_front_percent * MAX_MOTOR_VOLTAGE);
+    setLeftVoltage(motor_percentages.left_front_percent * MAX_MOTOR_VOLTAGE);
+    setRightVoltage(motor_percentages.right_front_percent * MAX_MOTOR_VOLTAGE);
 }
 
 void TankDriveNode::setDriveVoltage(int x_voltage, int y_voltage, int theta_voltage) {
@@ -94,8 +94,8 @@ void TankDriveNode::setDriveVelocity(float y_velocity, float theta_velocity) {
 
     //std::cout << "Left: " << motor_percentages.left_front_percent << " | Right: " << motor_percentages.right_front_percent << std::endl;
 
-    m_setLeftVelocity(motor_percentages.left_front_percent * MAX_VELOCITY);
-    m_setRightVelocity(motor_percentages.right_front_percent * MAX_VELOCITY);
+    setLeftVelocity(motor_percentages.left_front_percent * MAX_VELOCITY);
+    setRightVelocity(motor_percentages.right_front_percent * MAX_VELOCITY);
 }
 
 void TankDriveNode::setDriveVelocity(float x_velocity, float y_velocity, float theta_velocity) { //incoming values should be in m/s so we convert to rpm here
@@ -109,8 +109,8 @@ void TankDriveNode::teleopPeriodic() {
     int left = left_y + right_x;
     int right = left_y - right_x;
 
-    m_setLeftVoltage(copysign(max(min(fabs(left) / 127.0, 127.0), 0.0) * MAX_MOTOR_VOLTAGE, left));
-    m_setRightVoltage(copysign(max(min(fabs(right) / 127.0, 127.0), 0.0) * MAX_MOTOR_VOLTAGE, right));
+    setLeftVoltage(copysign(max(min(fabs(left) / 127.0, 127.0), 0.0) * MAX_MOTOR_VOLTAGE, left));
+    setRightVoltage(copysign(max(min(fabs(right) / 127.0, 127.0), 0.0) * MAX_MOTOR_VOLTAGE, right));
 }
 
 void TankDriveNode::autonPeriodic() {

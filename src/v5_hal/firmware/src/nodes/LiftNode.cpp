@@ -11,13 +11,22 @@ LiftNode::LiftNode(NodeManager* node_manager, std::string handle_name,
         m_bottom_limit_switch(bottom_limit_switch),
         m_top_limit_switch(top_limit_switch),
         m_potentiometer(potentiometer),
-        m_lift_pid(0.03, 0., 0., 2) {
+        m_lift_state(HOLDING),
+        m_lift_pid(0.002, 0., 0., 0), 
+        m_target_position(0),
+        m_tolerance(10) {
 
 }
 
 void LiftNode::initialize() {
     m_left_motor->getMotor()->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	m_right_motor->getMotor()->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    
+    // needs to be changed when going back to potentiometer
+    m_left_motor->getMotor()->set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
+
+    // TESTING CODE
+    pros::lcd::initialize();
 };
 
 void LiftNode::setLiftVoltage(int voltage) {
@@ -30,15 +39,31 @@ void LiftNode::setLiftVelocity(int velocity) {
     m_right_motor->moveVelocity(velocity);
 };
 
-void LiftNode::setLiftPosition(int position) {
-    // int currentPosition = m_potentiometer->getValue();
-    // int errorPosition = position - currentPosition;
-    // float lift_feedback = m_lift_pid->calculate(errorPosition);
-    // problems: need to work logic into periodic loop that runs on the robot, allow the robot to run the pid periodically check and update the error
+void LiftNode::setLiftPosition(int position, int tolerance) {
+    m_target_position = position;
+    m_tolerance = tolerance;
 };
 
-int LiftNode::getPosition() {
-    return m_potentiometer->getValue();
+int LiftNode::getPosition() { // change back to use pot
+    return m_left_motor->getPosition();
+}
+
+void LiftNode::updateLiftState() {
+    int positionBoundUpper = getPosition() + m_tolerance;
+    int positionBoundLower = getPosition() - m_tolerance;
+    pros::lcd::print(3, "m_target_position: %d\n", m_target_position);
+    pros::lcd::print(4, "Actual Position: %d\n", getPosition());
+    if(positionBoundLower < m_target_position && m_target_position < positionBoundUpper) {
+        m_lift_state = HOLDING;
+    } else {
+        m_lift_state = UPDATING;
+    }
+
+    if (m_lift_state == HOLDING) {
+        pros::lcd::print(2, "Lift State: Holding\n");
+    } else {
+        pros::lcd::print(2, "Lift State: Updating\n");
+    }
 }
 
 void LiftNode::teleopPeriodic() {
@@ -57,8 +82,25 @@ void LiftNode::teleopPeriodic() {
 };
 
 void LiftNode::autonPeriodic() {
-
+    updateLiftState();
+    
+    switch (m_lift_state) {
+        case UPDATING:
+            m_setLiftPID();
+        break;
+        case HOLDING:
+            setLiftVelocity(0);
+        break;
+    }
 };
+
+void LiftNode::m_setLiftPID() {
+    int errorPosition = m_target_position - getPosition();
+    float lift_feedback = m_lift_pid.calculate(errorPosition);
+    pros::lcd::print(0, "errorPosition: %f\n", errorPosition);
+    pros::lcd::print(1, "lift_feedback: %f\n", lift_feedback);
+    setLiftVelocity(lift_feedback * MAX_VELOCITY);
+}
 
 LiftNode::~LiftNode() {
 

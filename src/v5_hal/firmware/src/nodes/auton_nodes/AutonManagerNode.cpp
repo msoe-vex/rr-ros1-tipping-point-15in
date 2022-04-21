@@ -1,15 +1,17 @@
 #include "nodes/auton_nodes/AutonManagerNode.h"
 
 AutonManagerNode::AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, 
-    InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, ILiftNode* lift_node) : 
+    InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, ILiftNode* liftNode) : 
         Node(node_manager, 50),
         m_drive_node(drive_node),
         m_odom_node(odom_node),
         m_inertial_sensor_node(inertial_sensor_node),
         m_front_claw_node(front_claw_node),
-        m_lift_node(lift_node) {
-    m_test_auton = new MatchAuton(m_drive_node, m_odom_node, m_front_claw_node, m_lift_node);
-    selected_auton = m_test_auton;
+        m_liftNode(liftNode) {
+    m_matchAuton = new MatchAuton(m_drive_node, m_odom_node, m_front_claw_node, m_liftNode);
+    m_tuningAuton = new tuningRoutine(m_drive_node, m_odom_node);
+    m_testAuton = new testAuton(m_liftNode);
+    selected_auton = m_matchAuton;
 }
 
 void AutonManagerNode::initialize() {

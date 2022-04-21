@@ -10,10 +10,11 @@ MatchAuton::MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode*
 }
 
 void MatchAuton::AddNodes() {
-    // AutonNode* forwardNode = new AutonNode(10, new DriveStraightAction(m_drive_node, 30, 50, 10));
-    // Auton::AddFirstNode(forwardNode);
+    AutonNode* forwardNode = new AutonNode(10, new DriveStraightAction(m_driveNode, m_odomNode, 30, 50, 10));
+    Auton::AddFirstNode(forwardNode);
+
     AutonNode* clawCloseNode = new AutonNode(0.5, new UseClawAction(m_clawNode, true));
-    Auton::AddFirstNode(clawCloseNode);
+    forwardNode ->AddNext(clawCloseNode);
 
     AutonNode* waitNode = new AutonNode(0.5, new WaitAction(0.5));
     clawCloseNode->AddNext(waitNode);

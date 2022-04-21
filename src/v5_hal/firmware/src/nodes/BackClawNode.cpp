@@ -18,6 +18,7 @@ void BackClawNode::initialize() {
 }
 
 void BackClawNode::setState(BackClawState state) {
+    m_previousState = m_state;
     m_state = state;
 }
 
@@ -25,22 +26,22 @@ void BackClawNode::setState(BackClawState state) {
 // if not, pivot it back
 void BackClawNode::togglePivot() {
     if (m_state == PIVOT_BACK) {
-        m_state = PIVOT_DOWN_CLAW_OPEN;
+        setState(PIVOT_DOWN_CLAW_OPEN);
     } else {
-        m_state = PIVOT_BACK;
+        setState(PIVOT_BACK);
     }
 }
 
 // if the claw is pivotted back, pivot it forward and open the claw
 // if not, toggle the position of the claw
 void BackClawNode::toggleClaw() {
-if (m_state == PIVOT_BACK) {
-        m_state = PIVOT_DOWN_CLAW_OPEN;
+    if (m_state == PIVOT_BACK) {
+        setState(PIVOT_DOWN_CLAW_OPEN);
     } else {
         if (m_state == PIVOT_DOWN_CLAW_OPEN) {
-            m_state = PIVOT_DOWN_CLAW_CLOSED;
+            setState(PIVOT_DOWN_CLAW_CLOSED);
         } else {
-            m_state = PIVOT_DOWN_CLAW_OPEN;
+            setState(PIVOT_DOWN_CLAW_OPEN);
         }
     }
 }
@@ -88,6 +89,11 @@ void BackClawNode::periodic() {
 
     case PIVOT_DOWN_CLAW_OPEN:
         m_pivot->setValue(0);
+
+        if (m_previousState == PIVOT_BACK) {
+            pros::delay(2);
+        }
+
         m_claw->setValue(0);
     break;
 

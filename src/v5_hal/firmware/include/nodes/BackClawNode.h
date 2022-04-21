@@ -33,6 +33,7 @@ public:
 
 private:
     BackClawState m_state;
+    BackClawState m_previousState;
 
     pros::Controller* m_controller;
     pros::controller_digital_e_t m_pivotButton;

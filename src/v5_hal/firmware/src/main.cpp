@@ -130,7 +130,7 @@ void initialize() {
 	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, intakeMotor);
 
 	// Initialize the autonomous manager
-	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor, frontClaw, liftNode);
+	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor, frontClaw, backClaw, liftNode);
 
 	// Call the node manager to initialize all of the nodes above
 	nodeManager->initialize();

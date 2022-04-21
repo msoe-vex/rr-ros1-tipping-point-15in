@@ -15,12 +15,13 @@
 #include "auton/auton_routines/odomTest.h"
 #include "auton/auton_routines/testAuton.h"
 #include "lib-rr/pathing/PathManager.h"
+#include "nodes/BackClawNode.h"
 
 class AutonManagerNode : public Node {
 private:
     IDriveNode* m_drive_node;
     IClawNode* m_front_claw_node;
-    IClawNode* m_back_claw_node;
+    BackClawNode* m_back_claw_node;
     OdometryNode* m_odom_node;
     InertialSensorNode* m_inertial_sensor_node;
     ILiftNode* m_liftNode;
@@ -31,7 +32,7 @@ private:
 
 public:
     AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, 
-        InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, ILiftNode* liftNode);
+        InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, BackClawNode* back_claw_node, ILiftNode* liftNode);
 
     Auton* selected_auton;
 

@@ -82,7 +82,7 @@ void initialize() {
 		leftRearTopMotor,
 		leftRearBottomMotor,
 		rightFrontTopMotor,
-		rightFrontTopMotor,
+		rightFrontBottomMotor,
 		rightRearTopMotor,
 		rightRearBottomMotor
 	};
@@ -121,7 +121,7 @@ void initialize() {
 
 	backClawPiston = new ADIDigitalOutNode(nodeManager, "backClawPiston", 'F', false);
 
-	backPivotPiston = new ADIDigitalOutNode(nodeManager, "backPivotPiston", 'E', false);
+	backPivotPiston = new ADIDigitalOutNode(nodeManager, "backPivotPiston", 'E', true);
 
 	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_DOWN, 
 		pros::E_CONTROLLER_DIGITAL_LEFT, backPivotPiston, backClawPiston);
@@ -130,7 +130,7 @@ void initialize() {
 	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, intakeMotor);
 
 	// Initialize the autonomous manager
-	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor, frontClaw, backClaw, liftNode);
+	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor, frontClaw, backClaw, liftNode, intakeNode);
 
 	// Call the node manager to initialize all of the nodes above
 	nodeManager->initialize();
@@ -157,7 +157,8 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-	
+	Pose startingPose(Vector2d(-44.75, 16.75), Rotation2Dd(1.449));
+    odomNode->setCurrentPose(startingPose);
 }
 
 /**

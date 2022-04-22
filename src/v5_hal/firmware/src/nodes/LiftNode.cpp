@@ -51,8 +51,8 @@ int LiftNode::getPosition() { // change back to use pot
 void LiftNode::updateLiftState() {
     int positionBoundUpper = getPosition() + m_tolerance;
     int positionBoundLower = getPosition() - m_tolerance;
-    pros::lcd::print(3, "m_target_position: %d\n", m_target_position);
-    pros::lcd::print(4, "Actual Position: %d\n", getPosition());
+    //pros::lcd::print(3, "m_target_position: %d\n", m_target_position);
+    //pros::lcd::print(4, "Actual Position: %d\n", getPosition());
     if(positionBoundLower < m_target_position && m_target_position < positionBoundUpper) {
         m_lift_state = HOLDING;
     } else {
@@ -60,9 +60,9 @@ void LiftNode::updateLiftState() {
     }
 
     if (m_lift_state == HOLDING) {
-        pros::lcd::print(2, "Lift State: Holding\n");
+        //pros::lcd::print(2, "Lift State: Holding\n");
     } else {
-        pros::lcd::print(2, "Lift State: Updating\n");
+        //pros::lcd::print(2, "Lift State: Updating\n");
     }
 }
 
@@ -97,8 +97,8 @@ void LiftNode::autonPeriodic() {
 void LiftNode::m_setLiftPID() {
     int errorPosition = m_target_position - getPosition();
     float lift_feedback = m_lift_pid.calculate(errorPosition);
-    pros::lcd::print(0, "errorPosition: %f\n", errorPosition);
-    pros::lcd::print(1, "lift_feedback: %f\n", lift_feedback);
+    // pros::lcd::print(0, "errorPosition: %f\n", errorPosition);
+    // pros::lcd::print(1, "lift_feedback: %f\n", lift_feedback);
     setLiftVelocity(lift_feedback * MAX_VELOCITY);
 }
 

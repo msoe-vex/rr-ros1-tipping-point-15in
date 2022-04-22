@@ -10,6 +10,7 @@
 #include "lib-rr/auton/auton_actions/LiftVelocityAction.h"
 #include "lib-rr/auton/auton_actions/FollowPathAction.h"
 #include "lib-rr/pursuit/path_pursuit/TankPathPursuit.h"
+#include "lib-rr/auton/auton_actions/RollerIntakeAction.h"
 #include "lib-rr/pathing/PathManager.h"
 #include "lib-rr/math/Pose.h"
 #include "lib-rr/util/Constants.h"
@@ -20,7 +21,7 @@
 
 class MatchAuton : public Auton {
 public:
-    MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, BackClawNode* rearClawNode, ILiftNode* liftNode);
+    MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     void AddNodes();
 
@@ -30,4 +31,5 @@ private:
     IClawNode* m_frontClawNode;
     BackClawNode* m_backClawNode;
     ILiftNode* m_liftNode;
+    IRollerIntakeNode* m_intakeNode;
 };

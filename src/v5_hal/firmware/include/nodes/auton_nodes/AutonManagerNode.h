@@ -6,7 +6,7 @@
 #include "lib-rr/auton/auton_routines/TestPoseAuton.h"
 #include "lib-rr/auton/auton_routines/TestTurnAuton.h"
 #include "lib-rr/auton/auton_routines/TestTankPathAuton.h"
-#include "lib-rr/auton/auton_routines/TestBasicGoalAuton.h"
+#include "auton/auton_routines/TestBasicGoalAuton.h"
 #include "auton/auton_routines/MatchAuton.h"
 #include "auton/auton_routines/tuningRoutine.h"
 #include "lib-rr/nodes/subsystems/IClawNode.h"

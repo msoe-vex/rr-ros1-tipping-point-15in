@@ -12,7 +12,7 @@ AutonAction::actionStatus DeployAction::Action() {
     // if (m_timer.Get() > 0.5) {
     //     return END;
     // }
-
+    m_timer.Stop();
     return END;
 }
 

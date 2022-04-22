@@ -20,6 +20,7 @@ void BackClawNode::initialize() {
 void BackClawNode::setState(BackClawState state) {
     m_previousState = m_state;
     m_state = state;
+    m_stateChange = true;
 }
 
 // if the claw is pivotted back, pivot it forward and open the claw
@@ -82,29 +83,41 @@ void BackClawNode::autonPeriodic() {
 void BackClawNode::periodic() {
     switch (m_state)
     {
-    case PIVOT_BACK:
-        m_pivot->setValue(1);
-        m_claw->setValue(1);
-    break;
+        case PIVOT_BACK:
+            m_claw->setValue(1);
 
-    case PIVOT_DOWN_CLAW_OPEN:
-        m_pivot->setValue(0);
-
-        if (m_previousState == PIVOT_BACK) {
-            pros::delay(2);
-        }
-
-        m_claw->setValue(0);
-    break;
-
-    case PIVOT_DOWN_CLAW_CLOSED:
-        m_pivot->setValue(0);
-        m_claw->setValue(1);
-    break;
-    
-    default:
+            if (m_previousState == PIVOT_DOWN_CLAW_CLOSED) {
+                m_pivot->setValue(1);
+            } else if (m_stateChange && m_previousState == PIVOT_DOWN_CLAW_OPEN) {
+                m_timer.Start();
+            } else if (m_timer.Get() > 0.3) {
+                m_pivot->setValue(1);
+            }        
+            
         break;
+
+        case PIVOT_DOWN_CLAW_OPEN:
+            m_pivot->setValue(0);
+
+            if (m_previousState == PIVOT_DOWN_CLAW_CLOSED)
+                m_claw->setValue(0);
+            if (m_stateChange && m_previousState == PIVOT_BACK) {
+                m_timer.Start();
+            } else if (m_timer.Get() > 0.2) {
+                m_claw->setValue(0);
+            }        
+        break;
+
+        case PIVOT_DOWN_CLAW_CLOSED:
+            m_pivot->setValue(0);
+            m_claw->setValue(1);
+        break;
+        
+        default:
+            break;
     }
+
+    m_stateChange = false;
 }
 
 BackClawNode::~BackClawNode() {

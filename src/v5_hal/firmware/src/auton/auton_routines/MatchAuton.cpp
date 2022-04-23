@@ -82,10 +82,43 @@ void MatchAuton::AddNodes() {
     Path reversePointToCornerGoalPath = PathManager::GetInstance()->GetPath("ReversePointToWallRingPickup");
     AutonNode* reversePointToCornerGoal = new AutonNode(5, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(reversePointToCornerGoalPath), reversePointToCornerGoalPath, false));
 
-    AutonNode* liftDownForGoal = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 20, 10));
+    // AutonNode* liftDownForGoal = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 20, 10));
 
     oppositeRingToReversePoint->AddNext(reversePointToCornerGoal);
-    oppositeRingToReversePoint->AddNext(liftDownForGoal);
+    // oppositeRingToReversePoint->AddNext(liftDownForGoal);
+
+    AutonNode* driveForwardForRings = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, 15, 10, 80));
+    reversePointToCornerGoal->AddNext(driveForwardForRings);
+
+    AutonNode* driveBackward = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -15, 10, 80));
+    driveForwardForRings->AddNext(driveBackward);
+
+    AutonNode* driveForwardForRings2 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, 15, 10, 80));
+    driveBackward->AddNext(driveForwardForRings2);
+
+    AutonNode* driveBackward2 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -15, 10, 80));
+    driveForwardForRings2->AddNext(driveBackward2);
+
+    AutonNode* driveForwardForRings3 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, 15, 10, 80));
+    driveBackward2->AddNext(driveForwardForRings3);
+
+    AutonNode* driveBackward3 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -15, 10, 80));
+    driveForwardForRings3->AddNext(driveBackward3);
+
+    AutonNode* driveForwardForRings4 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, 15, 10, 80));
+    driveBackward3->AddNext(driveForwardForRings4);
+
+    AutonNode* driveBackward4 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -15, 10, 80));
+    driveForwardForRings4->AddNext(driveBackward4);
+
+    AutonNode* driveForwardForRings5 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, 15, 10, 80));
+    driveBackward4->AddNext(driveForwardForRings5);
+
+    AutonNode* driveBackward5 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -15, 10, 80));
+    driveForwardForRings5->AddNext(driveBackward5);
+
+    AutonNode* driveForwardForRings6 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, 15, 10, 80));
+    driveBackward5->AddNext(driveForwardForRings6);
 
     // AutonNode* frontClawGrabNeutral = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
     // reversePointToCornerGoal->AddNext(frontClawGrabNeutral);

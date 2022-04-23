@@ -58,7 +58,7 @@ void MatchAuton::AddNodes() {
     Path cornerGoalToReversePointPath = PathManager::GetInstance()->GetPath("CornerGoalDropToReversePoint");
     AutonNode* cornerGoalToReversePoint = new AutonNode(4, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(cornerGoalToReversePointPath), cornerGoalToReversePointPath, false));
 
-    AutonNode* delayRingIntake = new AutonNode(1., new WaitAction(1.));
+    AutonNode* delayRingIntake = new AutonNode(1.5, new WaitAction(1.5));
 
     frontClawDropNeutral->AddNext(cornerGoalToReversePoint);
     frontClawDropNeutral->AddNext(delayRingIntake);
@@ -119,6 +119,23 @@ void MatchAuton::AddNodes() {
 
     AutonNode* driveForwardForRings6 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, 15, 10, 80));
     driveBackward5->AddNext(driveForwardForRings6);
+
+    Path wallRingPickupToGoalReversePointPath = PathManager::GetInstance()->GetPath("WallRingPickupToGoalReversePoint");
+    AutonNode* wallRingPickupToGoalReversePoint = new AutonNode(5, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(wallRingPickupToGoalReversePointPath), wallRingPickupToGoalReversePointPath, false));
+
+    AutonNode* liftDownForGoalPickup = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 20, 20));
+
+    driveForwardForRings6->AddNext(wallRingPickupToGoalReversePoint);
+    driveForwardForRings6->AddNext(liftDownForGoalPickup);
+
+    Path goalReversePointToCornerGoalPath = PathManager::GetInstance()->GetPath("GoalReversePointToCornerGoal");
+    AutonNode* goalReversePointToCornerGoal = new AutonNode(3, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(goalReversePointToCornerGoalPath), goalReversePointToCornerGoalPath, false));
+
+    wallRingPickupToGoalReversePoint->AddNext(goalReversePointToCornerGoal);
+
+    AutonNode* neutralGoalGrab = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+
+    wallRingPickupToGoalReversePoint->AddNext(neutralGoalGrab);
 
     // AutonNode* frontClawGrabNeutral = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
     // reversePointToCornerGoal->AddNext(frontClawGrabNeutral);

@@ -1,23 +1,14 @@
 #include "auton/AutonSequencePresets.h"
 
-// AutonNode* getSingleGoalScoringSequence(AutonNode* initial_node, IntakeNode* intake_node, ConveyorNode* conveyor_node) {
-//     AutonNode* scoreFirstBall = new AutonNode(0.4, new UpdateConveyorStateAction(conveyor_node, ConveyorNode::SCORING_TOP, 0.4));
-//     initial_node->AddNext(scoreFirstBall);
+AutonNode* getPreloadsSequence(AutonNode* initial_node, IDriveNode* drive_node, OdometryNode* odom_node) {
+    AutonNode* forward = new AutonNode(0.4, new DriveStraightAction(drive_node, odom_node, 15, 10, 80));
+    initial_node->AddNext(forward);
 
-//     AutonNode* intakeOff = new AutonNode(0.1, new IntakeAction(intake_node, 0));
-//     initial_node->AddNext(intakeOff);
+    AutonNode* backward = new AutonNode(0.5, new DriveStraightAction(drive_node, odom_node, -15, 10, 80));
+    forward->AddNext(backward);
 
-//     AutonNode* holdSecondBall = new AutonNode(0.5, new UpdateConveyorStateAction(conveyor_node, ConveyorNode::HOLDING_TOP, 0.5));
-//     scoreFirstBall->AddNext(holdSecondBall);
-
-//     AutonNode* waitForIntake = new AutonNode(0.25, new WaitAction(0.25));
-//     intakeOff->AddNext(waitForIntake);
-
-//     AutonNode* finalIntakeOn = new AutonNode(0.5, new IntakeAction(intake_node, MAX_MOTOR_VOLTAGE, 2.0));
-//     waitForIntake->AddNext(finalIntakeOn);
-
-//     return finalIntakeOn;
-// }
+    return backward;
+}
 
 // AutonNode* getDoubleGoalScoringSequence(AutonNode* initial_node, IntakeNode* intake_node, ConveyorNode* conveyor_node) {
 //     AutonNode* scoreFirstBall = new AutonNode(0.27, new UpdateConveyorStateAction(conveyor_node, ConveyorNode::SCORING, 0.27));

@@ -65,11 +65,13 @@ void LiftNode::updateLiftState() {
 
 void LiftNode::teleopPeriodic() {
     if (m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1) && 
-        !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2) && m_potentiometer->getValue() < m_upperStop) {
+        !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2) && 
+         m_potentiometer->getValue() < m_upperStop) {
         m_left_motor->moveVoltage(MAX_MOTOR_VOLTAGE);
         m_right_motor->moveVoltage(MAX_MOTOR_VOLTAGE);
     } else if (m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2) && 
-        !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1 && m_potentiometer->getValue() > m_lowerStop)) {
+              !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1 ) && 
+               m_potentiometer->getValue() > m_lowerStop) {
         m_left_motor->moveVoltage(-MAX_MOTOR_VOLTAGE);
         m_right_motor->moveVoltage(-MAX_MOTOR_VOLTAGE);
     } else {

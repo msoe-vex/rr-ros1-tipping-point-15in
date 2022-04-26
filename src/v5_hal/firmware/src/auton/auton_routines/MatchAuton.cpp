@@ -19,9 +19,12 @@ void MatchAuton::AddNodes() {
     AutonNode* deploy = new AutonNode(0.1, new DeployAction());
     Auton::AddFirstNode(deploy);
 
+    AutonNode* liftDownForCenterDash = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, -20, 10));
+
     AutonNode* forward = new AutonNode(2, new DriveStraightAction(m_driveNode, m_odomNode, 41, 70, 80));
 
     deploy->AddNext(forward);
+    deploy->AddNext(liftDownForCenterDash);
 
     AutonNode* clawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
     forward ->AddNext(clawClose);
@@ -108,7 +111,7 @@ void MatchAuton::AddNodes() {
 
     AutonNode* neutralGoalGrab = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
 
-    wallRingPickupToGoalReversePoint->AddNext(neutralGoalGrab);
+    goalReversePointToCornerGoal->AddNext(neutralGoalGrab);
 
     // AutonNode* frontClawGrabNeutral = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
     // reversePointToCornerGoal->AddNext(frontClawGrabNeutral);

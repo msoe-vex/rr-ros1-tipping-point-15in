@@ -44,6 +44,7 @@
 #include "lib-rr/nodes/sensor_nodes/ADIEncoderNode.h"
 #include "lib-rr/nodes/sensor_nodes/ADIGyroNode.h"
 #include "lib-rr/nodes/sensor_nodes/ADIUltrasonicNode.h"
+#include "lib-rr/nodes/sensor_nodes/ADIPotentiometerNode.h"
 #include "lib-rr/nodes/sensor_nodes/InertialSensorNode.h"
 #include "lib-rr/nodes/sensor_nodes/ControllerNode.h"
 #include "lib-rr/nodes/system_nodes/CompetitionStatusNode.h"

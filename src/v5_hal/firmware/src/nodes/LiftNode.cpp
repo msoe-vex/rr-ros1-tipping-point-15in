@@ -2,7 +2,7 @@
 
 LiftNode::LiftNode(NodeManager* node_manager, std::string handle_name, 
         ControllerNode* controller, MotorNode* left_motor, 
-        MotorNode* right_motor, ADIAnalogInNode* potentiometer) : 
+        MotorNode* right_motor, ADIPotentiometerNode* potentiometer) : 
         ILiftNode(node_manager, handle_name), 
         m_controller(controller),
         m_left_motor(left_motor),
@@ -31,7 +31,7 @@ void LiftNode::setLiftVoltage(int voltage) {
     m_right_motor->moveVoltage(voltage);
 };
 
-void LiftNode::setLiftVelocity(int velocity) {
+void LiftNode::setLiftVelocity(float velocity) {
     m_left_motor->moveVelocity(velocity);
     m_right_motor->moveVelocity(velocity);
 };
@@ -41,8 +41,12 @@ void LiftNode::setLiftPosition(int position, int tolerance) {
     m_tolerance = tolerance;
 };
 
-int LiftNode::getPosition() { // change back to use pot
+int LiftNode::getPosition() {
     return m_potentiometer->getValue();
+}
+
+double LiftNode::getAngle() { // change back to use pot
+    return m_potentiometer->getAngle();
 }
 
 void LiftNode::updateLiftState() {
@@ -66,12 +70,12 @@ void LiftNode::updateLiftState() {
 void LiftNode::teleopPeriodic() {
     if (m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1) && 
         !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2) && 
-         m_potentiometer->getValue() < m_upperStop) {
+         getPosition() < m_upperStop) {
         m_left_motor->moveVoltage(MAX_MOTOR_VOLTAGE);
         m_right_motor->moveVoltage(MAX_MOTOR_VOLTAGE);
     } else if (m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2) && 
-              !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1 ) && 
-               m_potentiometer->getValue() > m_lowerStop) {
+              !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1) && 
+               getPosition() > m_lowerStop) {
         m_left_motor->moveVoltage(-MAX_MOTOR_VOLTAGE);
         m_right_motor->moveVoltage(-MAX_MOTOR_VOLTAGE);
     } else {

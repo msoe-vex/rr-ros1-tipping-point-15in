@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lib-rr/auton/Auton.h"
+#include "auton/AutonSequencePresets.h"
 #include "lib-rr/nodes/subsystems/IDriveNode.h"
 #include "lib-rr/nodes/odometry_nodes/OdometryNode.h"
 #include "lib-rr/nodes/sensor_nodes/InertialSensorNode.h"

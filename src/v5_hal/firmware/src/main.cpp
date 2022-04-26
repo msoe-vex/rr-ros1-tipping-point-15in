@@ -28,7 +28,7 @@ MotorNode* leftLiftMotor;
 MotorNode* rightLiftMotor;
 //ADIDigitalInNode* bottomLiftLimitSwitch;
 //ADIDigitalInNode* topLiftLimitSwitch;
-ADIAnalogInNode* liftPotentiometer;
+ADIPotentiometerNode* liftPotentiometer;
 
 MotorNode* intakeMotor;
 IntakeNode* intakeNode;
@@ -108,7 +108,7 @@ void initialize() {
 	rightLiftMotor = new MotorNode(nodeManager, 17, "rightLiftMotor", true);
 	//bottom_limit_switch_lift = new ADIDigitalInNode(node_manager, 7, "bottom_limit_switch_lift");
 	//top_limit_switch_lift = new ADIDigitalInNode(node_manager, 6, "top_limit_switch_lift");
-	//potentiometer_lift = new ADIAnalogInNode(node_manager, 8, "potentiometer_lift", false);
+	liftPotentiometer = new ADIPotentiometerNode(nodeManager, 'H', "liftPotentiometer");
 
 	liftNode = new LiftNode(nodeManager, "liftNode", 
         controller, leftLiftMotor, 

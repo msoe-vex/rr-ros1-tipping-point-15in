@@ -29,8 +29,6 @@ public:
 
     int getPosition();
 
-    double getAngle();
-
     void updateLiftState();
 
     void teleopPeriodic();

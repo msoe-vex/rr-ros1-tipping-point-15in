@@ -45,10 +45,6 @@ int LiftNode::getPosition() {
     return m_potentiometer->getValue();
 }
 
-double LiftNode::getAngle() { // change back to use pot
-    return m_potentiometer->getAngle();
-}
-
 void LiftNode::updateLiftState() {
     int positionBoundUpper = getPosition() + m_tolerance;
     int positionBoundLower = getPosition() - m_tolerance;

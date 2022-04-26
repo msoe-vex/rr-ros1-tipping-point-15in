@@ -2,14 +2,11 @@
 
 LiftNode::LiftNode(NodeManager* node_manager, std::string handle_name, 
         ControllerNode* controller, MotorNode* left_motor, 
-        MotorNode* right_motor, ADIDigitalInNode* bottom_limit_switch, 
-        ADIDigitalInNode* top_limit_switch, ADIAnalogInNode* potentiometer) : 
+        MotorNode* right_motor, ADIAnalogInNode* potentiometer) : 
         ILiftNode(node_manager, handle_name), 
         m_controller(controller),
         m_left_motor(left_motor),
         m_right_motor(right_motor),
-        m_bottom_limit_switch(bottom_limit_switch),
-        m_top_limit_switch(top_limit_switch),
         m_potentiometer(potentiometer),
         m_lift_state(HOLDING),
         m_lift_pid(0.002, 0., 0., 0), 

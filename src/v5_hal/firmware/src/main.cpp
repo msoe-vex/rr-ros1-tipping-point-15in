@@ -26,8 +26,8 @@ ADIDigitalOutNode* backPivotPiston;
 LiftNode* liftNode;
 MotorNode* leftLiftMotor;
 MotorNode* rightLiftMotor;
-ADIDigitalInNode* bottomLiftLimitSwitch;
-ADIDigitalInNode* topLiftLimitSwitch;
+//ADIDigitalInNode* bottomLiftLimitSwitch;
+//ADIDigitalInNode* topLiftLimitSwitch;
 ADIAnalogInNode* liftPotentiometer;
 
 MotorNode* intakeMotor;
@@ -112,8 +112,7 @@ void initialize() {
 
 	liftNode = new LiftNode(nodeManager, "liftNode", 
         controller, leftLiftMotor, 
-        rightLiftMotor, bottomLiftLimitSwitch, 
-		topLiftLimitSwitch, liftPotentiometer
+        rightLiftMotor, liftPotentiometer
 	);
 
 	frontClawPiston = new ADIDigitalOutNode(nodeManager, "frontClawPiston", 'G', false);

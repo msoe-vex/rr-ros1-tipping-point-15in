@@ -42,7 +42,7 @@ void LiftNode::setLiftPosition(int position, int tolerance) {
 };
 
 int LiftNode::getPosition() { // change back to use pot
-    return m_left_motor->getPosition();
+    return m_potentiometer->getValue();
 }
 
 void LiftNode::updateLiftState() {

@@ -45,6 +45,8 @@ private:
     MotorNode* m_right_motor;
     ADIAnalogInNode* m_potentiometer;
     LiftState m_lift_state;
+    int m_upperStop = 0;
+    int m_lowerStop = 0;
 
     PID m_lift_pid;
 

@@ -2,14 +2,11 @@
 
 LiftNode::LiftNode(NodeManager* node_manager, std::string handle_name, 
         ControllerNode* controller, MotorNode* left_motor, 
-        MotorNode* right_motor, ADIDigitalInNode* bottom_limit_switch, 
-        ADIDigitalInNode* top_limit_switch, ADIAnalogInNode* potentiometer) : 
+        MotorNode* right_motor, ADIPotentiometerNode* potentiometer) : 
         ILiftNode(node_manager, handle_name), 
         m_controller(controller),
         m_left_motor(left_motor),
         m_right_motor(right_motor),
-        m_bottom_limit_switch(bottom_limit_switch),
-        m_top_limit_switch(top_limit_switch),
         m_potentiometer(potentiometer),
         m_lift_state(HOLDING),
         m_lift_pid(0.002, 0., 0., 0), 
@@ -34,7 +31,7 @@ void LiftNode::setLiftVoltage(int voltage) {
     m_right_motor->moveVoltage(voltage);
 };
 
-void LiftNode::setLiftVelocity(int velocity) {
+void LiftNode::setLiftVelocity(float velocity) {
     m_left_motor->moveVelocity(velocity);
     m_right_motor->moveVelocity(velocity);
 };
@@ -44,8 +41,8 @@ void LiftNode::setLiftPosition(int position, int tolerance) {
     m_tolerance = tolerance;
 };
 
-int LiftNode::getPosition() { // change back to use pot
-    return m_left_motor->getPosition();
+int LiftNode::getPosition() {
+    return m_potentiometer->getValue();
 }
 
 void LiftNode::updateLiftState() {
@@ -68,11 +65,13 @@ void LiftNode::updateLiftState() {
 
 void LiftNode::teleopPeriodic() {
     if (m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1) && 
-        !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2) && 
+         getPosition() < m_upperStop) {
         m_left_motor->moveVoltage(MAX_MOTOR_VOLTAGE);
         m_right_motor->moveVoltage(MAX_MOTOR_VOLTAGE);
     } else if (m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R2) && 
-        !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+              !m_controller->getController()->get_digital(pros::E_CONTROLLER_DIGITAL_R1) && 
+               getPosition() > m_lowerStop) {
         m_left_motor->moveVoltage(-MAX_MOTOR_VOLTAGE);
         m_right_motor->moveVoltage(-MAX_MOTOR_VOLTAGE);
     } else {

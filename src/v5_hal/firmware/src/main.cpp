@@ -64,8 +64,13 @@ void initialize() {
 
 	inertialSensor = new InertialSensorNode(nodeManager, "inertialSensor", 8);
 
+	IOdometry::EncoderLocations locations = {
+		Vector2d(0.019, -3.862),
+		Vector2d(0.692, 0.703)
+	};
+
 	odomNode = new OdometryNode(nodeManager, "odometry", x_odom_encoder, 
-	y_odom_encoder, inertialSensor, OdometryNode::FOLLOWER);
+	y_odom_encoder, inertialSensor, OdometryNode::FOLLOWER, locations);
 
 	leftFrontTopMotor = new MotorNode(nodeManager, 19, "leftFrontTopMotor", false); //top
 	leftFrontBottomMotor = new MotorNode(nodeManager, 20, "leftFrontBottomMotor", true); //bottom

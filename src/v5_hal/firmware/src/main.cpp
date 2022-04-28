@@ -16,6 +16,10 @@ MotorNode* rightFrontBottomMotor;
 MotorNode* rightRearTopMotor;
 MotorNode* rightRearBottomMotor;
 
+
+ADIDigitalInNode* frontClawLeftLimit;
+ADIDigitalInNode* frontClawRightLimit;
+
 ClawNode* frontClaw;
 ADIDigitalOutNode* frontClawPiston;
 
@@ -61,8 +65,8 @@ void initialize() {
 	controller = new ControllerNode(nodeManager, "controller");
 
 	/* Define the odometry components */
-	x_odom_encoder = new ADIEncoderNode(nodeManager, {21, 'C', 'D'}, "xOdomEncoder", false);
-	y_odom_encoder = new ADIEncoderNode(nodeManager, {21, 'A', 'B'}, "yOdomEncoder", false);
+	x_odom_encoder = new ADIEncoderNode(nodeManager, {21, 'A', 'B'}, "xOdomEncoder", false);
+	y_odom_encoder = new ADIEncoderNode(nodeManager, {21, 'C', 'D'}, "yOdomEncoder", false);
 
 	inertialSensor = new InertialSensorNode(nodeManager, "inertialSensor", 8);
 
@@ -120,17 +124,20 @@ void initialize() {
         rightLiftMotor, liftPotentiometer
 	);
 
+	frontClawLeftLimit = new ADIDigitalInNode(nodeManager, 'A', "frontClawLeftLimit");
+	frontClawRightLimit = new ADIDigitalInNode(nodeManager, 'E', "frontClawRightLimit");
+
 	frontClawPiston = new ADIDigitalOutNode(nodeManager, "frontClawPiston", 'G', false);
 	frontClaw = new ClawNode(nodeManager, "frontClaw", controller, frontClawPiston, pros::E_CONTROLLER_DIGITAL_B);
 
 	backClawPiston = new ADIDigitalOutNode(nodeManager, "backClawPiston", 'F', false);
 
-	backPivotPiston = new ADIDigitalOutNode(nodeManager, "backPivotPiston", 'E', true);
+	backPivotPiston = new ADIDigitalOutNode(nodeManager, "backPivotPiston", {21, 'F'}, true);
 
 	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_DOWN, 
 		pros::E_CONTROLLER_DIGITAL_LEFT, backPivotPiston, backClawPiston);
 
-	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", 'E', false);
+	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", {21, 'E'}, true);
 	wingArm = new ClawNode(nodeManager, "wingArm", controller, wingArmPiston, pros::E_CONTROLLER_DIGITAL_A);
 
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);

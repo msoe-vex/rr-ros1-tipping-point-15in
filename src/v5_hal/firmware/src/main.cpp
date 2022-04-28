@@ -29,6 +29,7 @@ ADIDigitalOutNode* wingArmPiston;
 LiftNode* liftNode;
 MotorNode* leftLiftMotor;
 MotorNode* rightLiftMotor;
+
 ADIPotentiometerNode* liftPotentiometer;
 
 MotorNode* intakeMotor;
@@ -129,7 +130,7 @@ void initialize() {
 	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_DOWN, 
 		pros::E_CONTROLLER_DIGITAL_LEFT, backPivotPiston, backClawPiston);
 
-	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", 'H', false); //not the actual port, just made it up for rn
+	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", {21, 'A'}, false); //not the actual port, just made it up for rn
 	wingArm = new ClawNode(nodeManager, "wingArm", controller, wingArmPiston, pros::E_CONTROLLER_DIGITAL_A);
 
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);

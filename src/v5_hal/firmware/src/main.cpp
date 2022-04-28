@@ -23,11 +23,12 @@ BackClawNode* backClaw;
 ADIDigitalOutNode* backClawPiston;
 ADIDigitalOutNode* backPivotPiston;
 
+ClawNode* wingArm;
+ADIDigitalOutNode* wingArmPiston;
+
 LiftNode* liftNode;
 MotorNode* leftLiftMotor;
 MotorNode* rightLiftMotor;
-//ADIDigitalInNode* bottomLiftLimitSwitch;
-//ADIDigitalInNode* topLiftLimitSwitch;
 ADIPotentiometerNode* liftPotentiometer;
 
 MotorNode* intakeMotor;
@@ -111,8 +112,6 @@ void initialize() {
 	
 	leftLiftMotor = new MotorNode(nodeManager, 18, "leftLiftMotor", false);
 	rightLiftMotor = new MotorNode(nodeManager, 17, "rightLiftMotor", true);
-	//bottom_limit_switch_lift = new ADIDigitalInNode(node_manager, 7, "bottom_limit_switch_lift");
-	//top_limit_switch_lift = new ADIDigitalInNode(node_manager, 6, "top_limit_switch_lift");
 	liftPotentiometer = new ADIPotentiometerNode(nodeManager, 'H', "liftPotentiometer");
 
 	liftNode = new LiftNode(nodeManager, "liftNode", 
@@ -129,6 +128,9 @@ void initialize() {
 
 	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_DOWN, 
 		pros::E_CONTROLLER_DIGITAL_LEFT, backPivotPiston, backClawPiston);
+
+	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", 'H', false); //not the actual port, just made it up for rn
+	wingArm = new ClawNode(nodeManager, "wingArm", controller, wingArmPiston, pros::E_CONTROLLER_DIGITAL_A);
 
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);
 	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, intakeMotor);

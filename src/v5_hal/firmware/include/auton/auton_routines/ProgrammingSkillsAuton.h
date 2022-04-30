@@ -22,7 +22,7 @@
 
 class ProgrammingSkillsAuton : public Auton {
 public:
-    ProgrammingSkillsAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
+    ProgrammingSkillsAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, BackClawNode* rearClawNode, IClawNode* WingArm, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     void AddNodes();
 
@@ -31,6 +31,7 @@ private:
     OdometryNode* m_odomNode;
     IClawNode* m_frontClawNode;
     BackClawNode* m_backClawNode;
+    IClawNode* m_WingArmNode;
     ILiftNode* m_liftNode;
     IRollerIntakeNode* m_intakeNode;
 };

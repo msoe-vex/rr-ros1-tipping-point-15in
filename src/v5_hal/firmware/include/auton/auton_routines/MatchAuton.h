@@ -23,7 +23,7 @@
 
 class MatchAuton : public Auton {
 public:
-    MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
+    MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     void AddNodes();
 
@@ -31,6 +31,7 @@ private:
     IDriveNode* m_driveNode;
     OdometryNode* m_odomNode;
     IClawNode* m_frontClawNode;
+    IClawNode* m_wingArm;
     BackClawNode* m_backClawNode;
     ILiftNode* m_liftNode;
     IRollerIntakeNode* m_intakeNode;

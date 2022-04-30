@@ -23,6 +23,7 @@ private:
     IDriveNode* m_drive_node;
     IClawNode* m_front_claw_node;
     BackClawNode* m_back_claw_node;
+    IClawNode* m_wing_arm_node;
     OdometryNode* m_odom_node;
     InertialSensorNode* m_inertial_sensor_node;
     ILiftNode* m_liftNode;
@@ -35,7 +36,7 @@ private:
 
 public:
     AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, 
-        InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, BackClawNode* back_claw_node, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
+        InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, BackClawNode* back_claw_node, IClawNode* wing_arm_node, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     Auton* selected_auton;
 

@@ -10,14 +10,15 @@ AutonManagerNode::AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_
         m_back_claw_node(back_claw_node),
         m_liftNode(liftNode),
         m_intakeNode(intakeNode) {
+    m_ProgrammingSkillsAuton = new ProgrammingSkillsAuton(m_drive_node, m_odom_node, m_front_claw_node, m_back_claw_node, m_liftNode, m_intakeNode);
     m_matchAuton = new MatchAuton(m_drive_node, m_odom_node, m_front_claw_node, m_back_claw_node, m_liftNode, m_intakeNode);
     m_tuningAuton = new tuningRoutine(m_drive_node, m_odom_node);
     m_testAuton = new testAuton(m_liftNode);
-    selected_auton = m_matchAuton;
+    selected_auton = m_ProgrammingSkillsAuton;
 }
 
 void AutonManagerNode::initialize() {
-    PathManager::GetInstance()->LoadPathsFile("/usd/pathMatchAuton.json");
+    PathManager::GetInstance()->LoadPathsFile("/usd/programmingSkillsPaths.json");
 }
 
 void AutonManagerNode::autonPeriodic() {

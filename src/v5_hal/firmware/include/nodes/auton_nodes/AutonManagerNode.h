@@ -8,6 +8,7 @@
 #include "lib-rr/auton/auton_routines/TestTankPathAuton.h"
 #include "auton/auton_routines/TestBasicGoalAuton.h"
 #include "auton/auton_routines/MatchAuton.h"
+#include "auton/auton_routines/ProgrammingSkillsAuton.h"
 #include "auton/auton_routines/tuningRoutine.h"
 #include "lib-rr/nodes/subsystems/IClawNode.h"
 #include "lib-rr/nodes/subsystems/ILiftNode.h"
@@ -27,6 +28,7 @@ private:
     ILiftNode* m_liftNode;
     IRollerIntakeNode* m_intakeNode;
 
+    Auton* m_ProgrammingSkillsAuton;
     Auton* m_matchAuton;
     Auton* m_tuningAuton;
     Auton* m_testAuton;

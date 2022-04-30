@@ -21,7 +21,7 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     AutonNode* backClawOpen = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_DOWN_CLAW_OPEN));
 
-    AutonNode* backwardsToAllianceGoal = new AutonNode(2., new DriveStraightAction(m_driveNode, m_odomNode, 6, 70, 80));
+    AutonNode* backwardsToAllianceGoal = new AutonNode(2., new DriveStraightAction(m_driveNode, m_odomNode, 6, 80, 40));
 
     deploy -> AddNext(backClawOpen);
 

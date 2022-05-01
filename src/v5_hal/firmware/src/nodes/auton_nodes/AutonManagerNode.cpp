@@ -20,7 +20,7 @@ AutonManagerNode::AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_
 }
 
 void AutonManagerNode::initialize() {
-    PathManager::GetInstance()->LoadPathsFile("/usd/programmingSkillsPaths15.json");
+    PathManager::GetInstance()->LoadPathsFile("/usd/prog-skills-start.json");
 }
 
 void AutonManagerNode::autonPeriodic() {

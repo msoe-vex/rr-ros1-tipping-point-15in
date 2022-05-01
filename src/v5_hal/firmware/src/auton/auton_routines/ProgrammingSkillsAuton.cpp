@@ -69,6 +69,15 @@ void ProgrammingSkillsAuton::AddNodes() {
     // GettingOnRingLine->AddNext(ringIntake);
     // GettingOnRingLine->AddNext(ThroughRings);
 
+    Path NeutralDrop1Path = PathManager::GetInstance()->GetPath("NeutralDrop1");
+    AutonNode* NeutralDrop1 = new AutonNode(10, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(NeutralDrop1Path), NeutralDrop1Path, false));
+
+    
+
+
+
+    
+
 
 
 

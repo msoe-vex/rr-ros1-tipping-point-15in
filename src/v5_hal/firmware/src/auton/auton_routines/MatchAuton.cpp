@@ -17,6 +17,12 @@ void MatchAuton::AddNodes() {
     Pose startingPose(Vector2d(-45, 17.375), Rotation2Dd(M_PI_2));
     m_odomNode->setCurrentPose(startingPose);
 
+    DriveStraightAction::DriveStraightParams driveParams = {
+        900.,
+        5. / 3.,
+        M_PI * 3.25
+    };
+
     AutonNode* deploy = new AutonNode(0.1, new DeployAction());
     Auton::AddFirstNode(deploy);
 

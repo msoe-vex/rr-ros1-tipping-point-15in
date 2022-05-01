@@ -12,9 +12,10 @@ AutonManagerNode::AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_
         m_liftNode(liftNode),
         m_intakeNode(intakeNode) {
     m_matchAuton = new MatchAuton(m_drive_node, m_odom_node, m_front_claw_node, m_wing_arm, m_back_claw_node, m_liftNode, m_intakeNode);
+    m_matchAuton2 = new MatchAuton2(m_drive_node, m_odom_node, m_front_claw_node, m_wing_arm, m_back_claw_node, m_liftNode, m_intakeNode);
     m_tuningAuton = new tuningRoutine(m_drive_node, m_odom_node);
     m_testAuton = new testAuton(m_liftNode);
-    selected_auton = m_matchAuton;
+    selected_auton = m_matchAuton2;
 }
 
 void AutonManagerNode::initialize() {

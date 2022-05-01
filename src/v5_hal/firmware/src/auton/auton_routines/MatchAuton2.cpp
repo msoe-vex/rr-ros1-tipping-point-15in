@@ -22,7 +22,7 @@ void MatchAuton2::AddNodes() {
 
     AutonNode* liftDownForCenterDash = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 270, 10));
 
-    AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
+    AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
 
     AutonNode* forward = new AutonNode(5, new DriveStraightAction(m_driveNode, m_odomNode, 40, 70, 90));
 
@@ -34,7 +34,7 @@ void MatchAuton2::AddNodes() {
 
     //AutonNode* backward = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -20, 70, 80));
 
-    AutonNode* wingArmRetractGrab = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
+    AutonNode* wingArmRetractGrab = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
 
     // forward->AddNext(backClawOpen);
     //forward->AddNext(backward);
@@ -43,38 +43,44 @@ void MatchAuton2::AddNodes() {
     AutonNode* wingReleaseDelay = new AutonNode(0.7, new WaitAction(0.7));
     // // Helpful at dragging goal to side
 
-    AutonNode* wingArmDeployRelease = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
+    AutonNode* wingArmDeployRelease = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
 
-    Path dragMiddleNeutral = PathManager::GetInstance()->GetPath("RipNeutral");
-    AutonNode* goalDragToColorGoal = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(dragMiddleNeutral), 
-            dragMiddleNeutral, 
-            false
-        )
-    );
+    // Path dragMiddleNeutral = PathManager::GetInstance()->GetPath("RipNeutral");
+    // AutonNode* goalDragToColorGoal = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(dragMiddleNeutral), 
+    //         dragMiddleNeutral, 
+    //         false
+    //     )
+    // );
 
-    forward->AddNext(goalDragToColorGoal);
-    goalDragToColorGoal->AddNext(wingReleaseDelay);
+    // forward->AddNext(goalDragToColorGoal);
+    // goalDragToColorGoal->AddNext(wingReleaseDelay);
 
-    wingReleaseDelay->AddNext(wingArmDeployRelease);
+    // wingReleaseDelay->AddNext(wingArmDeployRelease);
 
-    Path toBlueGoal = PathManager::GetInstance()->GetPath("ToBlueGoal");
-    AutonNode* ToBlueGoal = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(toBlueGoal), 
-            toBlueGoal, 
-            false
-        )
-    );
+    // Path toBlueGoal = PathManager::GetInstance()->GetPath("ToBlueGoal");
+    // AutonNode* ToBlueGoal = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(toBlueGoal), 
+    //         toBlueGoal, 
+    //         false
+    //     )
+    // );
 
-    wingArmDeployRelease->AddNext(ToBlueGoal);
+    // wingArmDeployRelease->AddNext(ToBlueGoal);
+
+
+
+
+
+    
 
     // AutonNode* backClawCloseColor = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_BACK));
 

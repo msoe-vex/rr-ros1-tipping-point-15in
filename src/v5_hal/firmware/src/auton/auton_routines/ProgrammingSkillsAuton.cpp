@@ -323,6 +323,8 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     Wait7->AddNext(raiseYellowToScore);
 
+    AutonNode* WingArmUp2 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
+
     Path YellowDropBackPath = PathManager::GetInstance()->GetPath("YellowDropBack");
     AutonNode* YellowDropBack = new AutonNode(
         10, 
@@ -337,6 +339,7 @@ void ProgrammingSkillsAuton::AddNodes() {
         );
 
     raiseYellowToScore->AddNext(YellowDropBack);
+    YellowDropBack->AddNext(WingArmUp2);
 
     Path PlaceYellowPath = PathManager::GetInstance()->GetPath("PlaceYellow");
     AutonNode* PlaceYellow = new AutonNode(
@@ -374,7 +377,7 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     dropYellowDrop->AddNext(PlaceYellowBack);
 
-    AutonNode* WingArmUp2 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
+
 
     AutonNode* lowerFront3 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
 
@@ -393,9 +396,13 @@ void ProgrammingSkillsAuton::AddNodes() {
             )
         );
     PlaceYellowBack->AddNext(ringIntakeOff2);
-    PlaceYellowBack->AddNext(WingArmUp2);
     PlaceYellowBack->AddNext(lowerFront3);
     PlaceYellowBack->AddNext(GoCorner);
+
+
+
+
+
 
 //================================================================================================
 
@@ -417,8 +424,66 @@ void ProgrammingSkillsAuton::AddNodes() {
 
 
     
+    
+    AutonNode* raiseAboveWall = new AutonNode(1., new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
+
+    GoCorner->AddNext(raiseAboveWall);
+
+    Path ResetPosePath = PathManager::GetInstance()->GetPath("ResetPose");
+    AutonNode* ResetPose = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(ResetPosePath), 
+            ResetPosePath, 
+            false
+        )
+    );
+
+    raiseAboveWall->AddNext(ResetPose);
+
+    
+    AutonNode* Wait8 = new AutonNode(0.5, new WaitAction(0.5));
+
+    ResetPose->AddNext(Wait8);
+
+
+    Path BackupFromResetPath = PathManager::GetInstance()->GetPath("BackupFromReset");
+    AutonNode* BackupFromReset = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(BackupFromResetPath), 
+            BackupFromResetPath, 
+            true
+        )
+    );
+
+
+    AutonNode* putDownLift = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 275, 10));
+
+    Wait8->AddNext(BackupFromReset);
+    BackupFromReset->AddNext(putDownLift);
+
+    Path AlignWithCornerPath = PathManager::GetInstance()->GetPath("AlignWithCorner");
+    AutonNode* AlignWithCorner = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(AlignWithCornerPath), 
+            AlignWithCornerPath, 
+            false
+        )
+    );
+
+
+    putDownLift->AddNext(AlignWithCorner);
+
     AutonNode* frontClawCloseOnNeutralGoal = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
-    GoCorner->AddNext(frontClawCloseOnNeutralGoal);
+    AlignWithCorner->AddNext(frontClawCloseOnNeutralGoal);
 
     AutonNode* waitBeforeMove = new AutonNode(0.5, new WaitAction(.5));
     frontClawCloseOnNeutralGoal->AddNext(waitBeforeMove);
@@ -431,14 +496,11 @@ void ProgrammingSkillsAuton::AddNodes() {
             m_odomNode, 
             new TankPathPursuit(BackupFromCornerPath), 
             BackupFromCornerPath, 
-            true
+            false
         )
     );
 
-    AutonNode* liftUpGoal = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 500, 10));
-
     waitBeforeMove->AddNext(BackupFromCorner);
-    waitBeforeMove->AddNext(liftUpGoal);
 
     AutonNode* moveLiftToScoringPosition = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 1800, 10));
 

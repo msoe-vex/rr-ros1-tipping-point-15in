@@ -1,6 +1,6 @@
-#include "auton/auton_routines/MatchAuton.h"
+#include "auton/auton_routines/LeftQuickAuton.h"
 
-MatchAuton::MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
+LeftQuickAuton::LeftQuickAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
         Auton("15in Match Auton"), 
         m_driveNode(driveNode),
         m_odomNode(odomNode),
@@ -12,7 +12,7 @@ MatchAuton::MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode*
     
 }
 
-void MatchAuton::AddNodes() {
+void LeftQuickAuton::AddNodes() {
     // Set the starting position, as measured on the field
     Pose startingPose(Vector2d(-45, 17.375), Rotation2Dd(M_PI_2));
     m_odomNode->setCurrentPose(startingPose);
@@ -24,7 +24,7 @@ void MatchAuton::AddNodes() {
 
     AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
 
-    AutonNode* forward = new AutonNode(2, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, 24, 70, 80));
+    AutonNode* forward = new AutonNode(2, new DriveStraightAction(m_driveNode, m_odomNode, driveParams, 24, 70, 80));
 
     deploy->AddNext(forward);
     deploy->AddNext(liftDownForCenterDash);
@@ -32,7 +32,7 @@ void MatchAuton::AddNodes() {
 
     AutonNode* backClawOpen = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_DOWN_CLAW_OPEN));
 
-    AutonNode* backward = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -20, 70, 80));
+    AutonNode* backward = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, driveParams, -20, 70, 80));
 
     AutonNode* wingArmRetractGrab = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
 
@@ -173,95 +173,126 @@ void MatchAuton::AddNodes() {
 
     neutralGoalGrabArc->AddNext(neutralGoalGrab);
 
+    Path neutralGoalReversePath = PathManager::GetInstance()->GetPath("NeutralGoalReverse");
+    AutonNode* neutralGoalReverse = new AutonNode(
+        4, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(neutralGoalReversePath), 
+            neutralGoalReversePath, 
+            false
+        )
+    );
 
+    neutralGoalReverse->AddAction(new MoveLiftToPositionAction(m_liftNode, 550, 10));
 
-    // AutonNode* clawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
-    // forward ->AddNext(clawClose);
+    neutralGoalGrab->AddNext(neutralGoalReverse);
 
-    // AutonNode* wait = new AutonNode(0.5, new WaitAction(0.5));
-    // clawClose->AddNext(wait);
+    AutonNode* liftUpToReleaseArm = new AutonNode(4, new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
 
-    // AutonNode* liftUp = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 100, 10));
-    // wait->AddNext(liftUp);
+    liftUpToReleaseArm->AddAction(new UseClawAction(m_wingArm, false));
 
-    // Path path = PathManager::GetInstance()->GetPath("LeftGoalToWallReverse");
-    // AutonNode* leftGoalToWall = new AutonNode(10, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(path), path, false));
+    neutralGoalReverse->AddNext(liftUpToReleaseArm);
 
-    // AutonNode* backClawOpenDelay = new AutonNode(1, new WaitAction(1));
+    AutonNode* liftDownWithGoal = new AutonNode(4, new MoveLiftToPositionAction(m_liftNode, 270, 10, true));
 
-    // forward->AddNext(leftGoalToWall);
-    // forward->AddNext(backClawOpenDelay);
+    liftUpToReleaseArm->AddNext(liftDownWithGoal);
 
-    // AutonNode* backClawOpen = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_DOWN_CLAW_OPEN));
+    Path neutralGoalCornerPath = PathManager::GetInstance()->GetPath("NeutralGoalCorner");
+    AutonNode* neutralGoalCorner = new AutonNode(
+        6, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(neutralGoalCornerPath), 
+            neutralGoalCornerPath, 
+            false
+        )
+    );
 
-    // backClawOpenDelay->AddNext(backClawOpen);
+    liftDownWithGoal->AddNext(neutralGoalCorner);
 
-    // AutonNode* backClawClose = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_BACK));
-    // leftGoalToWall->AddNext(backClawClose);
+    AutonNode* liftDownForNeutralGoal = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 270, 10));
 
-    // Path wallToCornerPath = PathManager::GetInstance()->GetPath("WallToCornerGoalDrop");
-    // AutonNode* wallToCorner = new AutonNode(4, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(wallToCornerPath), wallToCornerPath, false));
+    neutralGoalCorner->AddNext(liftDownForNeutralGoal);
 
-    // leftGoalToWall->AddNext(wallToCorner);
+    AutonNode* releaseNeutralGoalCorner = new AutonNode(0.1, new UseClawAction(m_frontClawNode, false));
+
+    liftDownForNeutralGoal->AddNext(releaseNeutralGoalCorner);
+
+    Path cornerGoalDropToReversePointPath = PathManager::GetInstance()->GetPath("CornerGoalDropToReversePoint");
+    AutonNode* cornerGoalDropToReversePoint = new AutonNode(
+        6, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(cornerGoalDropToReversePointPath), 
+            cornerGoalDropToReversePointPath, 
+            false
+        )
+    );
+
+    releaseNeutralGoalCorner->AddNext(cornerGoalDropToReversePoint);
+
+    Path reversePointToWallRingPickupPath = PathManager::GetInstance()->GetPath("ReversePointToWallRingPickup");
+    AutonNode* reversePointToWallRingPickup = new AutonNode(
+        5, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(reversePointToWallRingPickupPath), 
+            reversePointToWallRingPickupPath, 
+            false
+        )
+    );
+
+    reversePointToWallRingPickup->AddAction(new RollerIntakeAction(m_intakeNode));
+
+    AutonNode* liftUpForPreloads = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 1700, 10));
+
+    cornerGoalDropToReversePoint->AddNext(reversePointToWallRingPickup);
+    cornerGoalDropToReversePoint->AddNext(liftUpForPreloads);
+
+    AutonNode* preloads1 = getPreloadsSequence(reversePointToWallRingPickup, m_driveNode, m_odomNode, driveParams); 
     
-    // AutonNode* frontClawDropNeutral = new AutonNode(0.1, new UseClawAction(m_frontClawNode, false));
-    // wallToCorner->AddNext(frontClawDropNeutral);
+    AutonNode* preloads2 = getPreloadsSequence(preloads1, m_driveNode, m_odomNode, driveParams);
 
-    // Path cornerGoalToReversePointPath = PathManager::GetInstance()->GetPath("CornerGoalDropToReversePoint");
-    // AutonNode* cornerGoalToReversePoint = new AutonNode(4, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(cornerGoalToReversePointPath), cornerGoalToReversePointPath, false));
+    Path wallRingPickupToGoalReversePointPath = PathManager::GetInstance()->GetPath("WallRingPickupToGoalReversePoint");
+    AutonNode* wallRingPickupToGoalReversePoint = new AutonNode(
+        5, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(wallRingPickupToGoalReversePointPath), 
+            wallRingPickupToGoalReversePointPath, 
+            false
+        )
+    );
 
-    // AutonNode* delayRingIntake = new AutonNode(1.5, new WaitAction(1.5));
+    wallRingPickupToGoalReversePoint->AddAction(new RollerIntakeAction(m_intakeNode, 0));
 
-    // frontClawDropNeutral->AddNext(cornerGoalToReversePoint);
-    // frontClawDropNeutral->AddNext(delayRingIntake);
+    preloads2->AddNext(wallRingPickupToGoalReversePoint);
 
-    // AutonNode* ringIntake = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
+    AutonNode* liftDownForCornerGoal = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 270, 10));
 
-    // AutonNode* liftUpForRings = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 300, 10));
-
-    // delayRingIntake->AddNext(ringIntake);
-    // delayRingIntake->AddNext(liftUpForRings);
-
-    // Path reversePointToOppositeRingPath = PathManager::GetInstance()->GetPath("ReversePointToOppositeRing");
-    // AutonNode* reversePointToOppositeRing = new AutonNode(7, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(reversePointToOppositeRingPath), reversePointToOppositeRingPath, false));
-
-    // cornerGoalToReversePoint->AddNext(reversePointToOppositeRing);
-
-    // Path oppositeRingToReversePointPath = PathManager::GetInstance()->GetPath("OppositeRingToReversePoint");
-    // AutonNode* oppositeRingToReversePoint = new AutonNode(8, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(oppositeRingToReversePointPath), oppositeRingToReversePointPath, false));
-    // reversePointToOppositeRing->AddNext(oppositeRingToReversePoint);
-
-    // Path reversePointToCornerGoalPath = PathManager::GetInstance()->GetPath("ReversePointToWallRingPickup");
-    // AutonNode* reversePointToCornerGoal = new AutonNode(5, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(reversePointToCornerGoalPath), reversePointToCornerGoalPath, false));
-
-    // AutonNode* liftDownForGoal = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 20, 10));
-
-    // oppositeRingToReversePoint->AddNext(reversePointToCornerGoal);
-    // oppositeRingToReversePoint->AddNext(liftDownForGoal);
-
-    // AutonNode* preloads1 = getPreloadsSequence(reversePointToCornerGoal, m_driveNode, m_odomNode);
-
-    // AutonNode* preloads2 = getPreloadsSequence(preloads1, m_driveNode, m_odomNode);
+    wallRingPickupToGoalReversePoint->AddNext(liftDownForCornerGoal);
     
-    // AutonNode* preloads3 = getPreloadsSequence(preloads2, m_driveNode, m_odomNode);
+    Path goalReversePointToCornerGoalPath = PathManager::GetInstance()->GetPath("GoalReversePointToCornerGoal");
+    AutonNode* goalReversePointToCornerGoal = new AutonNode(
+        5, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(goalReversePointToCornerGoalPath), 
+            goalReversePointToCornerGoalPath, 
+            false
+        )
+    );
 
-    // Path wallRingPickupToGoalReversePointPath = PathManager::GetInstance()->GetPath("WallRingPickupToGoalReversePoint");
-    // AutonNode* wallRingPickupToGoalReversePoint = new AutonNode(5, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(wallRingPickupToGoalReversePointPath), wallRingPickupToGoalReversePointPath, false));
+    liftDownForCornerGoal->AddNext(goalReversePointToCornerGoal);
 
-    // AutonNode* liftDownForGoalPickup = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 20, 20));
+    AutonNode* neutralGoalGrabCorner = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
 
-    // preloads3->AddNext(wallRingPickupToGoalReversePoint);
-    // preloads3->AddNext(liftDownForGoalPickup);
-
-    // Path goalReversePointToCornerGoalPath = PathManager::GetInstance()->GetPath("GoalReversePointToCornerGoal");
-    // AutonNode* goalReversePointToCornerGoal = new AutonNode(3, new FollowPathAction(m_driveNode, m_odomNode, new TankPathPursuit(goalReversePointToCornerGoalPath), goalReversePointToCornerGoalPath, false));
-
-    // wallRingPickupToGoalReversePoint->AddNext(goalReversePointToCornerGoal);
-
-    // AutonNode* neutralGoalGrab = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
-
-    // goalReversePointToCornerGoal->AddNext(neutralGoalGrab);
-
-    // AutonNode* frontClawGrabNeutral = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
-    // reversePointToCornerGoal->AddNext(frontClawGrabNeutral);
+    goalReversePointToCornerGoal->AddNext(neutralGoalGrabCorner);
 }

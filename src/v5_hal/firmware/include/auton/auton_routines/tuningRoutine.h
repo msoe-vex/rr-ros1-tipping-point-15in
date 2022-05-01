@@ -21,4 +21,10 @@ private:
 
     AutonNode* m_forward_node;
     //AutonNode* m_backward_node;
+
+    DriveStraightAction::DriveStraightParams m_driveParams = {
+        900.,
+        5. / 3.,
+        M_PI * 3.25
+    };
 };

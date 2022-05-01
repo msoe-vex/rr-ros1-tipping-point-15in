@@ -28,7 +28,7 @@
  * This function is used to generate a sequence to score balls in a goal.
  * This should follow the node that makes the robot drive into the goal
  */
-AutonNode* getPreloadsSequence(AutonNode* initial_node, IDriveNode* drive_node, OdometryNode* odom_node);
+AutonNode* getPreloadsSequence(AutonNode* initial_node, IDriveNode* drive_node, OdometryNode* odom_node, DriveStraightAction::DriveStraightParams params);
 
 // AutonNode* getDoubleGoalScoringSequence(AutonNode* initial_node, IntakeNode* intake_node, ConveyorNode* conveyor_node);
 

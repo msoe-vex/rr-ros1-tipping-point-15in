@@ -9,16 +9,16 @@
 #include "lib-rr/util/Constants.h"
 
 class IntakeNode : public IRollerIntakeNode {
-private:
-    pros::Controller* m_controller;
-    MotorNode* m_intake;
 
-    std::string m_handle_name;
-
-    bool m_open = false;
 
 public:
-    IntakeNode(NodeManager* node_manager, std::string handle_name, ControllerNode* controller, MotorNode* intake);
+    enum IntakeState {
+        INTAKING, OUTTAKING, HOLDING
+    };
+
+    IntakeNode(NodeManager* node_manager, std::string handle_name, 
+    ControllerNode* controller, pros::controller_digital_e_t intake_button, 
+    pros::controller_digital_e_t outtake_button, MotorNode* intake);
 
     void setIntakeVoltage(int voltage);
 
@@ -31,4 +31,17 @@ public:
     void autonPeriodic();
 
     ~IntakeNode();
+
+private:
+    IntakeState m_state;
+
+    pros::Controller* m_controller;
+    MotorNode* m_intake;
+
+    pros::controller_digital_e_t m_intakeButton;
+    pros::controller_digital_e_t m_outtakeButton;
+
+    std::string m_handle_name;
+
+    bool m_open = false;
 };

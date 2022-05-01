@@ -24,7 +24,7 @@ void LeftQuickAuton::AddNodes() {
 
     AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
 
-    AutonNode* forward = new AutonNode(2, new DriveStraightAction(m_driveNode, m_odomNode, driveParams, 24, 70, 80));
+    AutonNode* forward = new AutonNode(2, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, 24, 70, 80));
 
     deploy->AddNext(forward);
     deploy->AddNext(liftDownForCenterDash);
@@ -32,7 +32,7 @@ void LeftQuickAuton::AddNodes() {
 
     AutonNode* backClawOpen = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_DOWN_CLAW_OPEN));
 
-    AutonNode* backward = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, driveParams, -20, 70, 80));
+    AutonNode* backward = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, -20, 70, 80));
 
     AutonNode* wingArmRetractGrab = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
 
@@ -254,9 +254,9 @@ void LeftQuickAuton::AddNodes() {
     cornerGoalDropToReversePoint->AddNext(reversePointToWallRingPickup);
     cornerGoalDropToReversePoint->AddNext(liftUpForPreloads);
 
-    AutonNode* preloads1 = getPreloadsSequence(reversePointToWallRingPickup, m_driveNode, m_odomNode, driveParams); 
+    AutonNode* preloads1 = getPreloadsSequence(reversePointToWallRingPickup, m_driveNode, m_odomNode); 
     
-    AutonNode* preloads2 = getPreloadsSequence(preloads1, m_driveNode, m_odomNode, driveParams);
+    AutonNode* preloads2 = getPreloadsSequence(preloads1, m_driveNode, m_odomNode);
 
     Path wallRingPickupToGoalReversePointPath = PathManager::GetInstance()->GetPath("WallRingPickupToGoalReversePoint");
     AutonNode* wallRingPickupToGoalReversePoint = new AutonNode(

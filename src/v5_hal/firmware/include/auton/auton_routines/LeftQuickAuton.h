@@ -35,10 +35,4 @@ private:
     BackClawNode* m_backClawNode;
     ILiftNode* m_liftNode;
     IRollerIntakeNode* m_intakeNode;
-
-    DriveStraightAction::DriveStraightParams driveParams = {
-        900.,
-        5. / 3.,
-        M_PI * 3.25
-    };
 };

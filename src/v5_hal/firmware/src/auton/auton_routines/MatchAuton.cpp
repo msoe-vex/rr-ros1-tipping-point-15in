@@ -21,7 +21,7 @@ void MatchAuton::AddNodes() {
 
     AutonNode* liftDownForCenterDash = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, -20, 10));
 
-    AutonNode* forward = new AutonNode(2, new DriveStraightAction(m_driveNode, m_odomNode, 41, 70, 80));
+    AutonNode* forward = new AutonNode(2, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, 41, 70, 80));
 
     deploy->AddNext(forward);
     deploy->AddNext(liftDownForCenterDash);

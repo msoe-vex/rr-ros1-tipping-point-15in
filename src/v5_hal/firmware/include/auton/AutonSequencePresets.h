@@ -1,6 +1,7 @@
 #pragma once
 
 #include "api.h"
+#include "Constants.h"
 #include "lib-rr/auton/Auton.h"
 #include "lib-rr/auton/AutonSequence.h"
 #include "lib-rr/auton/Auton.h"

@@ -172,5 +172,47 @@ void MatchAuton2::AddNodes() {
 
     toCorner->AddNext(toRings);
 
+    AutonNode* clawOpen3 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    toRings->AddNext(clawOpen3);
+
+    AutonNode* quickReverseRingIntake = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, -12000));
+
+    clawOpen3->AddNext(quickReverseRingIntake);
+
+    AutonNode* wait2 = new AutonNode(0.5, new WaitAction(0.5));
+    quickReverseRingIntake->AddNext(wait2);
+
+    AutonNode* ringIntake2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
+
+    wait2->AddNext(ringIntake2);
+
     //If No goal, get the other neutral goal
+
+    //ToCollectHandRings
+
+
+    Path ToHandCollect = PathManager::GetInstance()->GetPath("ToCollectHandRings");
+    AutonNode* toHandCollect = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(ToHandCollect), 
+            ToHandCollect, 
+            false
+        )
+    );
+
+    clawOpen3->AddNext(toHandCollect);
+
+    AutonNode* preloads1 = getPreloadsSequence(toHandCollect, m_driveNode, m_odomNode);
+
+    AutonNode* preloads2 = getPreloadsSequence(preloads1, m_driveNode, m_odomNode);
+    
+    AutonNode* preloads3 = getPreloadsSequence(preloads2, m_driveNode, m_odomNode);
+
+    AutonNode* conveyorStop2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, 0));
+
+    preloads3->AddNext(conveyorStop2);
+
 }

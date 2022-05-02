@@ -13,11 +13,17 @@
 
 class testAuton : public Auton {
 public:
-    testAuton(ILiftNode* lift_node);
+    testAuton(IDriveNode* drive_node, OdometryNode* odom_node);
 
     void AddNodes();
 
 private:
-    ILiftNode* m_lift_node;
+    IDriveNode* m_drive_node;
+    OdometryNode* m_odom_node;
 
+    DriveStraightAction::DriveStraightParams m_driveParams = {
+        900.,
+        5. / 3.,
+        M_PI * 3.25
+    };
 };

@@ -1,13 +1,14 @@
 #include "auton/auton_routines/testAuton.h"
 
-testAuton::testAuton(ILiftNode* lift_node) : 
-        Auton("Test Turn Node"), 
-        m_lift_node(lift_node) {
+testAuton::testAuton(IDriveNode* drive_node, OdometryNode* odom_node) : 
+        Auton("Test Auton"), 
+        m_drive_node(drive_node),
+        m_odom_node(odom_node) {
     
 }
 
 void testAuton::AddNodes() {
-    AutonNode* test = new AutonNode(100, new MoveLiftToPositionAction(m_lift_node, 100, 10));
+    AutonNode* test = new AutonNode(100, new DriveStraightAction(m_drive_node, m_odom_node, m_driveParams, 50, 50, 80));
     Auton::AddFirstNode(test);
 
 }

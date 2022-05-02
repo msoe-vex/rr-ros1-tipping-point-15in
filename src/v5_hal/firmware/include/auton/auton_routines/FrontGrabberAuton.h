@@ -1,7 +1,6 @@
 #pragma once
 
 #include "lib-rr/auton/Auton.h"
-#include "Constants.h"
 #include "auton/AutonSequencePresets.h"
 #include "lib-rr/nodes/subsystems/IDriveNode.h"
 #include "lib-rr/nodes/odometry_nodes/OdometryNode.h"
@@ -21,9 +20,9 @@
 #include "auton/auton_actions/DeployAction.h"
 #include "auton/auton_actions/SetBackClawStateAction.h"
 
-class MatchAuton : public Auton {
+class FrontGrabberAuton : public Auton {
 public:
-    MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
+    FrontGrabberAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     void AddNodes();
 
@@ -31,7 +30,14 @@ private:
     IDriveNode* m_driveNode;
     OdometryNode* m_odomNode;
     IClawNode* m_frontClawNode;
+    IClawNode* m_wingArm;
     BackClawNode* m_backClawNode;
     ILiftNode* m_liftNode;
     IRollerIntakeNode* m_intakeNode;
+
+    DriveStraightAction::DriveStraightParams m_driveParams = {
+        900.,
+        5. / 3.,
+        M_PI * 3.25
+    };
 };

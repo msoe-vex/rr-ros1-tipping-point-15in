@@ -253,7 +253,24 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     pickupBlueDrop->AddNext(Wait6);
 
+    Path BackupAfterPickupBlueDropPath = PathManager::GetInstance()->GetPath("BackupAfterPickupBlueDrop");
+    AutonNode* BackupAfterPickupBlueDrop = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(
+                BackupAfterPickupBlueDropPath), 
+                BackupAfterPickupBlueDropPath, 
+                false
+            )
+        );
+
+    Wait6->AddNext(BackupAfterPickupBlueDrop);
+
     AutonNode* LiftBlueToScore = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
+
+    AutonNode* WingArmUp3 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
 
     AutonNode* ringIntakeOn2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
 
@@ -270,8 +287,9 @@ void ProgrammingSkillsAuton::AddNodes() {
             )
         );
 
-    pickupBlueDrop->AddNext(ringIntakeOn2);
-    pickupBlueDrop->AddNext(LiftBlueToScore); //TODO Test to see if we need a wait before this
+    BackupAfterPickupBlueDrop->AddNext(WingArmUp3);
+    BackupAfterPickupBlueDrop->AddNext(ringIntakeOn2);
+    BackupAfterPickupBlueDrop->AddNext(LiftBlueToScore); //TODO Test to see if we need a wait before this
     LiftBlueToScore->AddNext(PlaceBlueDrop);
 
     AutonNode* dropBlueDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
@@ -295,6 +313,9 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     AutonNode* dropFront2 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
 
+    
+    AutonNode* WingArmDown1 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, true));
+
     Path GetYellowDropPath = PathManager::GetInstance()->GetPath("GetYellowDrop");
     AutonNode* GetYellowDrop = new AutonNode(
         10, 
@@ -307,7 +328,7 @@ void ProgrammingSkillsAuton::AddNodes() {
                 false
             )
         );
-
+    BlueDropBack->AddNext(WingArmDown1);
     BlueDropBack->AddNext(dropFront2);
     BlueDropBack->AddNext(GetYellowDrop);
 
@@ -447,6 +468,11 @@ void ProgrammingSkillsAuton::AddNodes() {
     AutonNode* Wait8 = new AutonNode(0.5, new WaitAction(0.5));
 
     ResetPose->AddNext(Wait8);
+
+    // Pose currentPose = m_odomNode->getCurrentPose();
+    // Pose resetPose(Vector2d(-64.5, currentPose.position.y()), currentPose.angle);
+
+    //m_odomNode->setCurrentPose(resetPose);
 
 
     Path BackupFromResetPath = PathManager::GetInstance()->GetPath("BackupFromReset");

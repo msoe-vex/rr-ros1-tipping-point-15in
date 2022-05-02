@@ -64,13 +64,26 @@
 #include "lib-rr/util/Logger.h"
 
 // Project-specific includes
-#include "nodes/auton_nodes/AutonManagerNode.h"
+#include "lib-rr/auton/AutonManagerNode.h"
 #include "auton/auton_actions/DeployAction.h"
 #include "nodes/TankDriveNode.h"
 #include "nodes/ClawNode.h"
 #include "nodes/BackClawNode.h"
 #include "nodes/LiftNode.h"
 #include "nodes/IntakeNode.h"
+
+// autons
+#include "lib-rr/auton/AutonSelector.h"
+#include "lib-rr/auton/auton_routines/TestPathAuton.h"
+#include "lib-rr/auton/auton_routines/TestPoseAuton.h"
+#include "lib-rr/auton/auton_routines/TestTurnAuton.h"
+#include "lib-rr/auton/auton_routines/TestTankPathAuton.h"
+#include "auton/auton_routines/TestBasicGoalAuton.h"
+#include "auton/auton_routines/MatchAuton.h"
+#include "auton/auton_routines/MatchAuton2.h"
+#include "auton/auton_routines/tuningRoutine.h"
+#include "auton/auton_routines/odomTest.h"
+#include "auton/auton_routines/testAuton.h"
 
    /**
     * You should add more #includes here

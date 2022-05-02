@@ -9,8 +9,6 @@
 #include "lib-rr/util/Constants.h"
 
 class IntakeNode : public IRollerIntakeNode {
-
-
 public:
     enum IntakeState {
         INTAKING, OUTTAKING, HOLDING
@@ -44,6 +42,4 @@ private:
     bool m_previousIntakeState = false;
 
     std::string m_handle_name;
-
-    bool m_open = false;
 };

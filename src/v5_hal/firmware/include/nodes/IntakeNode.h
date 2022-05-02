@@ -41,6 +41,8 @@ private:
     pros::controller_digital_e_t m_intakeButton;
     pros::controller_digital_e_t m_outtakeButton;
 
+    bool m_previousIntakeState = false;
+
     std::string m_handle_name;
 
     bool m_open = false;

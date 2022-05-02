@@ -134,7 +134,7 @@ void initialize() {
 
 	backPivotPiston = new ADIDigitalOutNode(nodeManager, "backPivotPiston", {21, 'F'}, true);
 
-	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_L1, 
+	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_L2, 
 		pros::E_CONTROLLER_DIGITAL_B, backPivotPiston, backClawPiston);
 
 	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", {21, 'E'}, true);

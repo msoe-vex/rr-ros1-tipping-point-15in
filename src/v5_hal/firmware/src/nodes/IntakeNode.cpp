@@ -24,47 +24,45 @@ void IntakeNode::initialize() {
 }
 
 void IntakeNode::teleopPeriodic() {
-
-    bool IntakeButtonCurrentState = m_controller->get_digital(m_intakeButton);
-    bool OuttakeButtonCurrentState = m_controller->get_digital(m_outtakeButton);
+    bool intakeButtonCurrentState = m_controller->get_digital(m_intakeButton);
+    bool outtakeButtonCurrentState = m_controller->get_digital(m_outtakeButton);
 
     switch (m_state) {
         case HOLDING:
             setIntakeVoltage(0);
-            if(IntakeButtonCurrentState == 1 && OuttakeButtonCurrentState ==1) {
-                break;
-            } else if (IntakeButtonCurrentState  == 1 && OuttakeButtonCurrentState == 0) {
+
+            if (intakeButtonCurrentState && !m_previousIntakeState) {
                 m_state = INTAKING;
-                break;
-            } else if (IntakeButtonCurrentState  == 0 && OuttakeButtonCurrentState == 1) {
+            } else if (outtakeButtonCurrentState == 1) {
                 m_state = OUTTAKING;
-                break;
             }
+
+            break;
         case INTAKING:
             setIntakeVoltage(MAX_MOTOR_VOLTAGE);
-            if(IntakeButtonCurrentState == 1 && OuttakeButtonCurrentState ==1) {
-                break;
-            } else if (IntakeButtonCurrentState  == 1 && OuttakeButtonCurrentState == 0) {
+
+            if (intakeButtonCurrentState && !m_previousIntakeState) {
                 m_state = HOLDING;
-                break;
-            } else if (IntakeButtonCurrentState  == 0 && OuttakeButtonCurrentState == 1) {
+            } else if (outtakeButtonCurrentState) {
                 m_state = OUTTAKING;
-                break;
             }
+
+            break;
         case OUTTAKING:
             setIntakeVoltage(-1 * MAX_MOTOR_VOLTAGE);
-            if(IntakeButtonCurrentState == 1 && OuttakeButtonCurrentState ==1) {
-                break;
-            } else if (IntakeButtonCurrentState  == 1 && OuttakeButtonCurrentState == 0) {
+
+            if (intakeButtonCurrentState) {
                 m_state = INTAKING;
-                break;
-            } else if (IntakeButtonCurrentState  == 0 && OuttakeButtonCurrentState == 1) {
+            } else if (!outtakeButtonCurrentState) {
                 m_state = HOLDING;
-                break;
             }
+
+            break;
         default:
             break;
-    }
+    };
+
+    m_previousIntakeState = intakeButtonCurrentState;
 }
 
 void IntakeNode::autonPeriodic() {

@@ -14,14 +14,8 @@ MatchAuton2::MatchAuton2(IDriveNode* driveNode, OdometryNode* odomNode, IClawNod
 
 void MatchAuton2::AddNodes() {
     // Set the starting position, as measured on the field
-    Pose startingPose(Vector2d(31.917, 14.25), Rotation2Dd(M_PI_2+toRadians(36)));
-    m_odomNode->setCurrentPose(startingPose);
-
-    DriveStraightAction::DriveStraightParams driveParams = {
-        900.,
-        5. / 3.,
-        M_PI * 3.25
-    };
+    Pose startingPose(Vector2d(33., 15.25), Rotation2Dd(M_PI_2+toRadians(36)));
+    m_odomNode->setCurrentPose(startingPose); // was (31.917, 14.25)
 
     AutonNode* deploy = new AutonNode(0.1, new DeployAction());
     Auton::AddFirstNode(deploy);
@@ -30,7 +24,8 @@ void MatchAuton2::AddNodes() {
 
     AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
 
-    AutonNode* forward = new AutonNode(5, new DriveStraightAction(m_driveNode, m_odomNode, driveParams, 41.5, 65, 90));
+    //Original Parameters 41.5, 65,90
+    AutonNode* forward = new AutonNode(5, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, 41, 70, 90, .5));
 
     deploy->AddNext(forward);
     deploy->AddNext(liftDownForCenterDash);
@@ -205,14 +200,45 @@ void MatchAuton2::AddNodes() {
 
     clawOpen3->AddNext(toHandCollect);
 
-    AutonNode* preloads1 = getPreloadsSequence(toHandCollect, m_driveNode, m_odomNode);
+    AutonNode* preloads2 = getPreloadsSequence(toHandCollect, m_driveNode, m_odomNode);
+   
+    AutonNode* forward1 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, 15, 10, 80));
+    preloads2->AddNext(forward1);
 
-    AutonNode* preloads2 = getPreloadsSequence(preloads1, m_driveNode, m_odomNode);
+    AutonNode* wait3 = new AutonNode(5., new WaitAction(5.));
     
-    AutonNode* preloads3 = getPreloadsSequence(preloads2, m_driveNode, m_odomNode);
+    forward1->AddNext(wait3);
+ 
+    AutonNode* backward1 = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, -15, 10, 80));
+    wait3->AddNext(backward1);
+
+ 
+    AutonNode* preloads3 = getPreloadsSequence(backward1, m_driveNode, m_odomNode);
 
     AutonNode* conveyorStop2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, 0));
 
     preloads3->AddNext(conveyorStop2);
+
+    AutonNode* liftDown2 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
+
+    Path ReturnToCornerGoalPath = PathManager::GetInstance()->GetPath("ReturnToCornerGoal");
+    AutonNode* ReturnToCornerGoal = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(ReturnToCornerGoalPath), 
+            ReturnToCornerGoalPath, 
+            false
+        )
+    );
+
+
+    conveyorStop2->AddNext(liftDown2);
+    conveyorStop2->AddNext(ReturnToCornerGoal);
+
+    AutonNode* clawClose2 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+    ReturnToCornerGoal->AddNext(clawClose2);
+
 
 }

@@ -128,20 +128,20 @@ void initialize() {
 	frontClawRightLimit = new ADIDigitalInNode(nodeManager, 'E', "frontClawRightLimit");
 
 	frontClawPiston = new ADIDigitalOutNode(nodeManager, "frontClawPiston", 'G', false);
-	frontClaw = new ClawNode(nodeManager, "frontClaw", controller, frontClawPiston, pros::E_CONTROLLER_DIGITAL_B);
+	frontClaw = new ClawNode(nodeManager, "frontClaw", controller, frontClawPiston, pros::E_CONTROLLER_DIGITAL_L1);
 
 	backClawPiston = new ADIDigitalOutNode(nodeManager, "backClawPiston", 'F', false);
 
 	backPivotPiston = new ADIDigitalOutNode(nodeManager, "backPivotPiston", {21, 'F'}, true);
 
-	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_DOWN, 
-		pros::E_CONTROLLER_DIGITAL_LEFT, backPivotPiston, backClawPiston);
+	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_L2, 
+		pros::E_CONTROLLER_DIGITAL_B, backPivotPiston, backClawPiston);
 
 	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", {21, 'E'}, true);
 	wingArm = new ClawNode(nodeManager, "wingArm", controller, wingArmPiston, pros::E_CONTROLLER_DIGITAL_A);
 
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);
-	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, intakeMotor);
+	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, pros::E_CONTROLLER_DIGITAL_DOWN, pros::E_CONTROLLER_DIGITAL_LEFT, intakeMotor);
 
 	// Initialize the autonomous manager
 	autonManagerNode = new AutonManagerNode(nodeManager, tankDriveNode, odomNode, inertialSensor, frontClaw, backClaw, liftNode, intakeNode);

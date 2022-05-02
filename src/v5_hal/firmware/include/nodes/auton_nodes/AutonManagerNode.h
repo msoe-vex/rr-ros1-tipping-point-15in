@@ -33,14 +33,19 @@ private:
     Auton* m_matchAuton2;
     Auton* m_tuningAuton;
     Auton* m_testAuton;
+    
+    std::string pathJSON;
 
 public:
     AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, 
         InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, IClawNode* wing_arm, BackClawNode* back_claw_node, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     Auton* selected_auton;
+    std::vector<Auton*> autons;
 
     void initialize();
+    
+    void setPathsFile(std::string);
 
     void autonPeriodic();
 };

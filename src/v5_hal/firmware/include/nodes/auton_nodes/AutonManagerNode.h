@@ -8,6 +8,7 @@
 #include "lib-rr/auton/auton_routines/TestTankPathAuton.h"
 #include "auton/auton_routines/TestBasicGoalAuton.h"
 #include "auton/auton_routines/MatchAuton.h"
+#include "auton/auton_routines/MatchAuton2.h"
 #include "auton/auton_routines/tuningRoutine.h"
 #include "lib-rr/nodes/subsystems/IClawNode.h"
 #include "lib-rr/nodes/subsystems/ILiftNode.h"
@@ -21,6 +22,7 @@ class AutonManagerNode : public Node {
 private:
     IDriveNode* m_drive_node;
     IClawNode* m_front_claw_node;
+    IClawNode* m_wing_arm;
     BackClawNode* m_back_claw_node;
     OdometryNode* m_odom_node;
     InertialSensorNode* m_inertial_sensor_node;
@@ -28,12 +30,13 @@ private:
     IRollerIntakeNode* m_intakeNode;
 
     Auton* m_matchAuton;
+    Auton* m_matchAuton2;
     Auton* m_tuningAuton;
     Auton* m_testAuton;
 
 public:
     AutonManagerNode(NodeManager* node_manager, IDriveNode* drive_node, OdometryNode* odom_node, 
-        InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, BackClawNode* back_claw_node, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
+        InertialSensorNode* inertial_sensor_node, IClawNode* front_claw_node, IClawNode* wing_arm, BackClawNode* back_claw_node, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     Auton* selected_auton;
 

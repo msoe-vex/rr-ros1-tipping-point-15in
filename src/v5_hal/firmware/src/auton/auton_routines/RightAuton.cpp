@@ -1,7 +1,7 @@
 #include "auton/auton_routines/RightAuton.h"
 
 RightAuton::RightAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
-        Auton("15in Right Fast Auton"), 
+        Auton("15in Right Fast Auton", "/usd/pathMatchAuton2-15.json"), 
         m_driveNode(driveNode),
         m_odomNode(odomNode),
         m_frontClawNode(frontClawNode),

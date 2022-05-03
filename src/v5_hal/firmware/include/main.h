@@ -38,6 +38,7 @@
 
 // Raider Robotics library includes
 #include "lib-rr/nodes/NodeManager.h"
+#include "lib-rr/auton/AutonManagerNode.h"
 #include "lib-rr/nodes/actuator_nodes/MotorNode.h"
 #include "lib-rr/nodes/sensor_nodes/ADIAnalogInNode.h"
 #include "lib-rr/nodes/sensor_nodes/ADIDigitalInNode.h"
@@ -72,18 +73,18 @@
 #include "nodes/LiftNode.h"
 #include "nodes/IntakeNode.h"
 
-// autons
+// Autonomous modes
 #include "lib-rr/auton/AutonSelector.h"
 #include "lib-rr/auton/auton_routines/TestPathAuton.h"
 #include "lib-rr/auton/auton_routines/TestPoseAuton.h"
 #include "lib-rr/auton/auton_routines/TestTurnAuton.h"
 #include "lib-rr/auton/auton_routines/TestTankPathAuton.h"
 #include "auton/auton_routines/TestBasicGoalAuton.h"
-#include "auton/auton_routines/MatchAuton.h"
-#include "auton/auton_routines/MatchAuton2.h"
 #include "auton/auton_routines/tuningRoutine.h"
 #include "auton/auton_routines/odomTest.h"
 #include "auton/auton_routines/testAuton.h"
+#include "auton/auton_routines/RightAuton.h"
+#include "auton/auton_routines/LeftAuton.h"
 
    /**
     * You should add more #includes here

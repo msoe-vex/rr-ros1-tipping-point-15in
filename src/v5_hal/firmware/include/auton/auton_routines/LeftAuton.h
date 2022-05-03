@@ -21,9 +21,9 @@
 #include "auton/auton_actions/DeployAction.h"
 #include "auton/auton_actions/SetBackClawStateAction.h"
 
-class MatchAuton : public Auton {
+class LeftAuton : public Auton {
 public:
-    MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
+    LeftAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* rearClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode);
 
     void AddNodes();
 

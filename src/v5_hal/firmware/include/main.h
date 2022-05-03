@@ -60,6 +60,7 @@
 #include "lib-rr/eigen/Eigen/Dense"
 #include "lib-rr/pathing/PathManager.h"
 #include "lib-rr/pathing/PathSelector.h"
+#include "lib-rr/auton/AutonSelector.h"
 #include "lib-rr/util/Logger.h"
 
 // Project-specific includes

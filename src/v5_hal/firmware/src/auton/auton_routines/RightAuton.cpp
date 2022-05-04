@@ -22,7 +22,7 @@ void RightAuton::AddNodes() {
 
     AutonNode* liftDownForCenterDash = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 270, 10));
 
-    AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
+    AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
 
     //Original Parameters 41.5, 65,90
     AutonNode* forward = new AutonNode(5, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, 41, 70, 90, .5));
@@ -33,7 +33,7 @@ void RightAuton::AddNodes() {
 
     //AutonNode* backward = new AutonNode(1.5, new DriveStraightAction(m_driveNode, m_odomNode, -20, 70, 80));
 
-    AutonNode* wingArmRetractGrab = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
+    AutonNode* wingArmRetractGrab = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
 
     //forward->AddNext(backward);
     forward->AddNext(wingArmRetractGrab);
@@ -41,7 +41,7 @@ void RightAuton::AddNodes() {
     AutonNode* wingReleaseDelay = new AutonNode(0.7, new WaitAction(0.7));
     // // Helpful at dragging goal to side
 
-    AutonNode* wingArmDeployRelease = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
+    AutonNode* wingArmDeployRelease = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
     AutonNode* backClawOpen = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_DOWN_CLAW_OPEN));
 
     Path dragMiddleNeutral = PathManager::GetInstance()->GetPath("RipNeutral");
@@ -81,7 +81,7 @@ void RightAuton::AddNodes() {
 
     ToBlueGoal->AddNext(backClawCloseColor);
 
-    AutonNode* clawOpen = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    AutonNode* clawOpen = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
     ToBlueGoal->AddNext(clawOpen);
 
 
@@ -99,7 +99,7 @@ void RightAuton::AddNodes() {
 
     ToBlueGoal->AddNext(toNeutralLeft);
     
-    AutonNode* clawOpen2 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    AutonNode* clawOpen2 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
     toNeutralLeft->AddNext(clawOpen2);
 
     //LiftForNeutral
@@ -118,13 +118,13 @@ void RightAuton::AddNodes() {
 
     toNeutralLeft->AddNext(LiftForNeutral);
 
-    AutonNode* clawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+    AutonNode* clawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
     LiftForNeutral->AddNext(clawClose);
 
     AutonNode* liftUp = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
     clawClose->AddNext(liftUp);
 
-    AutonNode* wingArmRetract = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
+    AutonNode* wingArmRetract = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
     clawClose->AddNext(wingArmRetract);
 
     AutonNode* wait = new AutonNode(0.5, new WaitAction(0.5));
@@ -167,7 +167,7 @@ void RightAuton::AddNodes() {
 
     toCorner->AddNext(toRings);
 
-    AutonNode* clawOpen3 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    AutonNode* clawOpen3 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
     toRings->AddNext(clawOpen3);
 
     AutonNode* quickReverseRingIntake = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, -12000));
@@ -237,7 +237,7 @@ void RightAuton::AddNodes() {
     conveyorStop2->AddNext(liftDown2);
     conveyorStop2->AddNext(ReturnToCornerGoal);
 
-    AutonNode* clawClose2 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+    AutonNode* clawClose2 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
     ReturnToCornerGoal->AddNext(clawClose2);
 
 

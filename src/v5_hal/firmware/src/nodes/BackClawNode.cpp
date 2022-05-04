@@ -8,13 +8,13 @@ BackClawNode::BackClawNode(NodeManager* node_manager, std::string handle_name,
         m_pivotButton(pivotButton),
         m_clawButton(clawButton),
         m_pivot(pivot),
-        m_claw(claw) {
+        m_claw(claw),
+        m_state(PIVOT_BACK) {
     m_handle_name = handle_name.insert(0, "robot/");
 }
 
 
 void BackClawNode::initialize() {
-    m_state = PIVOT_BACK;
 }
 
 void BackClawNode::setState(BackClawState state) {

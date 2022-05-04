@@ -98,20 +98,20 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     Wait3->AddNext(BringDownForDrive);
 
-    Path BackFromNeutralLeftPath = PathManager::GetInstance()->GetPath("BackFromNeutralLeft");
-     AutonNode* BackFromNeutralLeft = new AutonNode(
-         10, 
-         new FollowPathAction(
-             m_driveNode, 
-             m_odomNode, 
-             new TankPathPursuit(
-                 BackFromNeutralLeftPath),
-                 BackFromNeutralLeftPath,
-                 false
-            )
-        );
+    // Path BackFromNeutralLeftPath = PathManager::GetInstance()->GetPath("BackFromNeutralLeft");
+    //  AutonNode* BackFromNeutralLeft = new AutonNode(
+    //      10, 
+    //      new FollowPathAction(
+    //          m_driveNode, 
+    //          m_odomNode, 
+    //          new TankPathPursuit(
+    //              BackFromNeutralLeftPath),
+    //              BackFromNeutralLeftPath,
+    //              false
+    //         )
+    //     );
 
-    BringDownForDrive->AddNext(BackFromNeutralLeft);
+  //  BringDownForDrive->AddNext(BackFromNeutralLeft);
 
     AutonNode* ringIntake = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
 
@@ -128,8 +128,8 @@ void ProgrammingSkillsAuton::AddNodes() {
             )
         );
 
-    BackFromNeutralLeft->AddNext(ringIntake);
-    BackFromNeutralLeft->AddNext(CollectRingsLeft);
+    BringDownForDrive->AddNext(ringIntake);
+    BringDownForDrive->AddNext(CollectRingsLeft);
 
     AutonNode* RaiseLeftToScore = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
 

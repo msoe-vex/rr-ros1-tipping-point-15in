@@ -137,7 +137,7 @@ void initialize() {
 	backClaw = new BackClawNode(nodeManager, "backClaw", controller, pros::E_CONTROLLER_DIGITAL_L2, 
 		pros::E_CONTROLLER_DIGITAL_B, backPivotPiston, backClawPiston);
 
-	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", {21, 'E'}, false,);
+	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", {21, 'E'}, false, true);
 	wingArm = new ClawNode(nodeManager, "wingArm", controller, wingArmPiston, pros::E_CONTROLLER_DIGITAL_A);
 
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);

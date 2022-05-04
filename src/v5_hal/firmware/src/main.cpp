@@ -143,12 +143,32 @@ void initialize() {
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);
 	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, pros::E_CONTROLLER_DIGITAL_DOWN, pros::E_CONTROLLER_DIGITAL_LEFT, intakeMotor);
 
-    MatchAuton* matchAuton = new MatchAuton(tankDriveNode, odomNode, frontClaw, wingArm, backClaw, liftNode, intakeNode);
-    MatchAuton2* matchAuton2 = new MatchAuton2(tankDriveNode, odomNode, frontClaw, wingArm, backClaw, liftNode, intakeNode);
-    tuningRoutine* tuningAuton = new tuningRoutine(tankDriveNode, odomNode);
-    testAuton* testAutonomous = new testAuton(liftNode);
-	
-	std::vector<Auton*> autons = { matchAuton, matchAuton2, tuningAuton, testAutonomous };
+	// Create autonomous modes
+	LeftAuton* leftAuton = new LeftAuton(
+		tankDriveNode, 
+		odomNode, 
+		frontClaw, 
+		wingArm, 
+		backClaw, 
+		liftNode, 
+		intakeNode
+	);
+
+    RightAuton* rightAuton = new RightAuton(
+		tankDriveNode, 
+		odomNode, 
+		frontClaw, 
+		wingArm, 
+		backClaw, 
+		liftNode, 
+		intakeNode
+	);
+
+	std::vector<Auton*> autons = {
+		leftAuton,
+		rightAuton	
+	};
+
 	// Initialize the autonomous manager
 	autonManagerNode = new AutonManagerNode(nodeManager, autons);
 

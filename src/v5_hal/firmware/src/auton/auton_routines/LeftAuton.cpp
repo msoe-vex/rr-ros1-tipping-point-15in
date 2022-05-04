@@ -1,7 +1,7 @@
-#include "auton/auton_routines/MatchAuton.h"
+#include "auton/auton_routines/LeftAuton.h"
 
-MatchAuton::MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
-        Auton("15in Match Auton"), 
+LeftAuton::LeftAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
+        Auton("15in Left Outer Auton", "/usd/pathMatchAuton2-15.json"), 
         m_driveNode(driveNode),
         m_odomNode(odomNode),
         m_frontClawNode(frontClawNode),
@@ -12,7 +12,7 @@ MatchAuton::MatchAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode*
     
 }
 
-void MatchAuton::AddNodes() {
+void LeftAuton::AddNodes() {
     // Set the starting position, as measured on the field
     Pose startingPose(Vector2d(-45, 17.375), Rotation2Dd(M_PI_2));
     m_odomNode->setCurrentPose(startingPose);

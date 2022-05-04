@@ -164,9 +164,20 @@ void initialize() {
 		intakeNode
 	);
 
+	ProgrammingSkillsAuton* progSkills = new ProgrammingSkillsAuton(
+		tankDriveNode,
+		odomNode,
+		frontClaw,
+		backClaw,
+		wingArm,
+		liftNode,
+		intakeNode
+	);
+
 	std::vector<Auton*> autons = {
 		leftAuton,
-		rightAuton	
+		rightAuton,
+		progSkills
 	};
 
 	// Initialize the autonomous manager

@@ -390,7 +390,7 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     RaiseForRings->AddNext(PrepareRedPlatform);
 
-    AutonNode* RaiseRed = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
+    AutonNode* RaiseRed = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10, false));
 
     PrepareRedPlatform->AddNext(RaiseRed);
 

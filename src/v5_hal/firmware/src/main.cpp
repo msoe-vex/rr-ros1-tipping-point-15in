@@ -217,8 +217,7 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-	Pose startingPose(Vector2d(-44.75, 16.75), Rotation2Dd(1.449));
-    odomNode->setCurrentPose(startingPose);
+
 }
 
 /**

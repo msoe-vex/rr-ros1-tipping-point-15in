@@ -164,9 +164,20 @@ void initialize() {
 		intakeNode
 	);
 
+	RightShortAuton* rightShortAuton = new RightShortAuton(
+		tankDriveNode, 
+		odomNode, 
+		frontClaw, 
+		wingArm, 
+		backClaw, 
+		liftNode, 
+		intakeNode
+	);
+
 	std::vector<Auton*> autons = {
 		leftAuton,
-		rightAuton	
+		rightAuton,
+		rightShortAuton	
 	};
 
 	// Initialize the autonomous manager
@@ -206,8 +217,7 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-	Pose startingPose(Vector2d(-44.75, 16.75), Rotation2Dd(1.449));
-    odomNode->setCurrentPose(startingPose);
+
 }
 
 /**

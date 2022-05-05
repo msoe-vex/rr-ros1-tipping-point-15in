@@ -164,9 +164,20 @@ void initialize() {
 		intakeNode
 	);
 
+	RightShortAuton* rightShortAuton = new RightShortAuton(
+		tankDriveNode, 
+		odomNode, 
+		frontClaw, 
+		wingArm, 
+		backClaw, 
+		liftNode, 
+		intakeNode
+	);
+
 	std::vector<Auton*> autons = {
 		leftAuton,
-		rightAuton	
+		rightAuton,
+		rightShortAuton	
 	};
 
 	// Initialize the autonomous manager

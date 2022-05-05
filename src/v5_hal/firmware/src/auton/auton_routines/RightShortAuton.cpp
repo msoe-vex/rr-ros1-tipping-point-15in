@@ -1,7 +1,7 @@
-#include "auton/auton_routines/RightAuton.h"
+#include "auton/auton_routines/RightShortAuton.h"
 
-RightAuton::RightAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
-        Auton("15in Right Fast Auton", "/usd/pathMatchAuton2-15.json"), 
+RightShortAuton::RightShortAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
+        Auton("15in Right Short Auton", "/usd/rightQuickPath.json"), 
         m_driveNode(driveNode),
         m_odomNode(odomNode),
         m_frontClawNode(frontClawNode),
@@ -12,7 +12,7 @@ RightAuton::RightAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode*
     
 }
 
-void RightAuton::AddNodes() {
+void RightShortAuton::AddNodes() {
     // Set the starting position, as measured on the field
     Pose startingPose(Vector2d(33., 15.25), Rotation2Dd(M_PI_2+toRadians(36)));
     m_odomNode->setCurrentPose(startingPose); // was (31.917, 14.25)
@@ -82,8 +82,8 @@ void RightAuton::AddNodes() {
     ToBlueGoal->AddNext(backClawCloseColor);
 
     AutonNode* clawOpen = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+    
     ToBlueGoal->AddNext(clawOpen);
-
 
     Path blueToNeutralLeft = PathManager::GetInstance()->GetPath("ToNeutralLeft");
     AutonNode* toNeutralLeft = new AutonNode(
@@ -133,58 +133,38 @@ void RightAuton::AddNodes() {
     AutonNode* liftDown = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 700, 10));
     wait->AddNext(liftDown);
 
-    AutonNode* ringIntake = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
-
-    wait->AddNext(ringIntake);
-
-    Path NeutralToCorner = PathManager::GetInstance()->GetPath("NeutralLeftToCorner");
-    AutonNode* toCorner = new AutonNode(
+    Path neutralGoalGrabToReversePath = PathManager::GetInstance()->GetPath("NeutralGoalGrabToReverse");
+    AutonNode* neutralGoalGrabToReverse = new AutonNode(
         45, 
         new FollowPathAction(
             m_driveNode, 
             m_odomNode, 
-            new TankPathPursuit(NeutralToCorner), 
-            NeutralToCorner, 
+            new TankPathPursuit(neutralGoalGrabToReversePath), 
+            neutralGoalGrabToReversePath, 
             false
         )
     );
 
-    ringIntake->AddNext(toCorner);
+    liftDown->AddNext(neutralGoalGrabToReverse);
 
-    //ToRings
-
-    Path ToRings = PathManager::GetInstance()->GetPath("ToRings");
-    AutonNode* toRings = new AutonNode(
+    Path reversePointToCornerPath = PathManager::GetInstance()->GetPath("ReversePointToCorner");
+    AutonNode* reversePointToCorner = new AutonNode(
         45, 
         new FollowPathAction(
             m_driveNode, 
             m_odomNode, 
-            new TankPathPursuit(ToRings), 
-            ToRings, 
+            new TankPathPursuit(reversePointToCornerPath), 
+            reversePointToCornerPath, 
             false
         )
     );
 
-    toCorner->AddNext(toRings);
+    reversePointToCorner->AddAction(new RollerIntakeAction(m_intakeNode));
 
-    AutonNode* clawOpen3 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
-    toRings->AddNext(clawOpen3);
+    neutralGoalGrabToReverse->AddNext(reversePointToCorner);
 
-    AutonNode* quickReverseRingIntake = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, -12000));
-
-    clawOpen3->AddNext(quickReverseRingIntake);
-
-    AutonNode* wait2 = new AutonNode(0.5, new WaitAction(0.5));
-    quickReverseRingIntake->AddNext(wait2);
-
-    AutonNode* ringIntake2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
-
-    wait2->AddNext(ringIntake2);
-
-    //If No goal, get the other neutral goal
-
-    //ToCollectHandRings
-
+    AutonNode* releaseGoal = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
+    reversePointToCorner->AddNext(releaseGoal);
 
     Path ToHandCollect = PathManager::GetInstance()->GetPath("ToCollectHandRings");
     AutonNode* toHandCollect = new AutonNode(
@@ -198,7 +178,7 @@ void RightAuton::AddNodes() {
         )
     );
 
-    clawOpen3->AddNext(toHandCollect);
+    releaseGoal->AddNext(toHandCollect);
 
     AutonNode* preloads2 = getPreloadsSequence(toHandCollect, m_driveNode, m_odomNode);
    

@@ -26,7 +26,7 @@ void ProgrammingSkillsAuton::AddNodes() {
     AutonNode* Wait0 = new AutonNode(0.5, new WaitAction(0.5));
 
 
-    AutonNode* frontClawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    AutonNode* frontClawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
 
     deploy->AddNext(backClawOpen);
 
@@ -55,7 +55,7 @@ void ProgrammingSkillsAuton::AddNodes() {
     GetBlueRampGoal->AddNext(backClawClose);
     GetBlueRampGoal->AddNext(Wait1);
 
-    AutonNode* WingArmDown = new AutonNode(0.1, new UseClawAction(m_WingArmNode, true));
+    AutonNode* WingArmDown = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
 
     Path ToNeutralGoalLeftPath = PathManager::GetInstance()->GetPath("ToNeutralGoalLeft");
     AutonNode* ToNeutralGoalLeft = new AutonNode(
@@ -73,7 +73,7 @@ void ProgrammingSkillsAuton::AddNodes() {
     Wait1->AddNext(ToNeutralGoalLeft);
     Wait1->AddNext(WingArmDown);
 
-    AutonNode* clawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+    AutonNode* clawClose = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
 
     ToNeutralGoalLeft->AddNext(clawClose);
 
@@ -86,7 +86,7 @@ void ProgrammingSkillsAuton::AddNodes() {
     Wait2->AddNext(liftUpForRelease);
 
 
-    AutonNode* WingArmUp = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
+    AutonNode* WingArmUp = new AutonNode(0.1, new UseClawAction(m_WingArmNode, true));
     
     liftUpForRelease->AddNext(WingArmUp);
 
@@ -97,21 +97,6 @@ void ProgrammingSkillsAuton::AddNodes() {
     AutonNode* BringDownForDrive = new AutonNode(1., new MoveLiftToPositionAction(m_liftNode, 700, 10, true));
 
     Wait3->AddNext(BringDownForDrive);
-
-    // Path BackFromNeutralLeftPath = PathManager::GetInstance()->GetPath("BackFromNeutralLeft");
-    //  AutonNode* BackFromNeutralLeft = new AutonNode(
-    //      10, 
-    //      new FollowPathAction(
-    //          m_driveNode, 
-    //          m_odomNode, 
-    //          new TankPathPursuit(
-    //              BackFromNeutralLeftPath),
-    //              BackFromNeutralLeftPath,
-    //              false
-    //         )
-    //     );
-
-  //  BringDownForDrive->AddNext(BackFromNeutralLeft);
 
     AutonNode* ringIntake = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
 
@@ -155,7 +140,7 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     PlatformLeft->AddNext(UnTip);
 
-    AutonNode* releaseLeft = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    AutonNode* releaseLeft = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
 
     UnTip->AddNext(releaseLeft);
 
@@ -227,7 +212,7 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     pickUpRedGoal->AddNext(Wait5);
 
-    AutonNode* WingArmDown2 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, true));
+    AutonNode* WingArmDown2 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
 
     Path GetBlueDropPath = PathManager::GetInstance()->GetPath("GetBlueDrop");
     AutonNode* GetBlueDrop = new AutonNode(
@@ -245,7 +230,7 @@ void ProgrammingSkillsAuton::AddNodes() {
     Wait5->AddNext(WingArmDown2);
     Wait5->AddNext(GetBlueDrop);
 
-    AutonNode* pickupBlueDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+    AutonNode* pickupBlueDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
 
     GetBlueDrop->AddNext(pickupBlueDrop);
 
@@ -270,7 +255,7 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     AutonNode* LiftBlueToScore = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
 
-    AutonNode* WingArmUp3 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
+    AutonNode* WingArmUp3 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, true));
 
     AutonNode* ringIntakeOn2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
 
@@ -292,7 +277,7 @@ void ProgrammingSkillsAuton::AddNodes() {
     BackupAfterPickupBlueDrop->AddNext(LiftBlueToScore); //TODO Test to see if we need a wait before this
     LiftBlueToScore->AddNext(PlaceBlueDrop);
 
-    AutonNode* dropBlueDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    AutonNode* dropBlueDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
 
     PlaceBlueDrop->AddNext(dropBlueDrop);
 
@@ -311,367 +296,299 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     dropBlueDrop->AddNext(BlueDropBack);
 
-    AutonNode* dropFront2 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
+
+
+
+
 
     
-    AutonNode* WingArmDown1 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, true));
 
-    Path GetYellowDropPath = PathManager::GetInstance()->GetPath("GetYellowDrop");
-    AutonNode* GetYellowDrop = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(
-                GetYellowDropPath), 
-                GetYellowDropPath, 
-                false
-            )
-        );
-    BlueDropBack->AddNext(WingArmDown1);
-    BlueDropBack->AddNext(dropFront2);
-    BlueDropBack->AddNext(GetYellowDrop);
+    // AutonNode* dropFront2 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
 
-    AutonNode* grabYellowDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+    
+    // AutonNode* WingArmDown1 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
 
-    GetYellowDrop->AddNext(grabYellowDrop);
+    // Path GetYellowDropPath = PathManager::GetInstance()->GetPath("GetYellowDrop");
+    // AutonNode* GetYellowDrop = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(
+    //             GetYellowDropPath), 
+    //             GetYellowDropPath, 
+    //             false
+    //         )
+    //     );
+    // BlueDropBack->AddNext(WingArmDown1);
+    // BlueDropBack->AddNext(dropFront2);
+    // BlueDropBack->AddNext(GetYellowDrop);
 
-    AutonNode* Wait7 = new AutonNode(0.5, new WaitAction(0.5));
+    // AutonNode* grabYellowDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
 
-    grabYellowDrop->AddNext(Wait7);
+    // GetYellowDrop->AddNext(grabYellowDrop);
 
-    AutonNode* raiseYellowToScore = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10));
+    // AutonNode* Wait7 = new AutonNode(0.5, new WaitAction(0.5));
 
-    Wait7->AddNext(raiseYellowToScore);
+    // grabYellowDrop->AddNext(Wait7);
 
-    AutonNode* WingArmUp2 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, false));
+    // AutonNode* raiseYellowToScore = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10));
 
-    Path YellowDropBackPath = PathManager::GetInstance()->GetPath("YellowDropBack");
-    AutonNode* YellowDropBack = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(
-                YellowDropBackPath), 
-                YellowDropBackPath, 
-                false
-            )
-        );
+    // Wait7->AddNext(raiseYellowToScore);
 
-    raiseYellowToScore->AddNext(YellowDropBack);
-    YellowDropBack->AddNext(WingArmUp2);
+    // AutonNode* WingArmUp2 = new AutonNode(0.1, new UseClawAction(m_WingArmNode, true));
 
-    Path PlaceYellowPath = PathManager::GetInstance()->GetPath("PlaceYellow");
-    AutonNode* PlaceYellow = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(
-                PlaceYellowPath), 
-                PlaceYellowPath, 
-                false
-            )
-        );
+    // Path YellowDropBackPath = PathManager::GetInstance()->GetPath("YellowDropBack");
+    // AutonNode* YellowDropBack = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(
+    //             YellowDropBackPath), 
+    //             YellowDropBackPath, 
+    //             false
+    //         )
+    //     );
+
+    // raiseYellowToScore->AddNext(WingArmUp2);
+    // raiseYellowToScore->AddNext(YellowDropBack);
+
+    // Path PlaceYellowPath = PathManager::GetInstance()->GetPath("PlaceYellow");
+    // AutonNode* PlaceYellow = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(
+    //             PlaceYellowPath), 
+    //             PlaceYellowPath, 
+    //             false
+    //         )
+    //     );
         
-    YellowDropBack->AddNext(PlaceYellow);
+    // YellowDropBack->AddNext(PlaceYellow);
 
-    AutonNode* dropYellowDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+    // AutonNode* dropYellowDrop = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
 
-    PlaceYellow->AddNext(dropYellowDrop);
-
-
-
-    Path PlaceYellowBackPath = PathManager::GetInstance()->GetPath("PlaceYellowBack");
-    AutonNode* PlaceYellowBack = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(
-                PlaceYellowBackPath), 
-                PlaceYellowBackPath, 
-                false
-            )
-        );
-
-    dropYellowDrop->AddNext(PlaceYellowBack);
+    // PlaceYellow->AddNext(dropYellowDrop);
 
 
 
-    AutonNode* lowerFront3 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
+    // Path PlaceYellowBackPath = PathManager::GetInstance()->GetPath("PlaceYellowBack");
+    // AutonNode* PlaceYellowBack = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(
+    //             PlaceYellowBackPath), 
+    //             PlaceYellowBackPath, 
+    //             false
+    //         )
+    //     );
 
-    AutonNode* ringIntakeOff2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, 0));
-
-    Path GoCornerPath = PathManager::GetInstance()->GetPath("GoCorner");
-    AutonNode* GoCorner = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(
-                GoCornerPath), 
-                GoCornerPath, 
-                false
-            )
-        );
-    PlaceYellowBack->AddNext(ringIntakeOff2);
-    PlaceYellowBack->AddNext(lowerFront3);
-    PlaceYellowBack->AddNext(GoCorner);
+    // dropYellowDrop->AddNext(PlaceYellowBack);
 
 
 
+    // AutonNode* lowerFront3 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
 
+    // AutonNode* ringIntakeOff2 = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, 0));
 
-
-//================================================================================================
+    // Path GoCornerPath = PathManager::GetInstance()->GetPath("GoCorner");
+    // AutonNode* GoCorner = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(
+    //             GoCornerPath), 
+    //             GoCornerPath, 
+    //             false
+    //         )
+    //     );
+    // PlaceYellowBack->AddNext(ringIntakeOff2);
+    // PlaceYellowBack->AddNext(lowerFront3);
+    // PlaceYellowBack->AddNext(GoCorner);
 
 
 
 
 
 
+    // AutonNode* frontClawCloseOnNeutralGoal = new AutonNode(0.1, new UseClawAction(m_frontClawNode, false));
+    // GoCorner->AddNext(frontClawCloseOnNeutralGoal);
 
+    // AutonNode* waitBeforeMove = new AutonNode(0.5, new WaitAction(.5));
+    // frontClawCloseOnNeutralGoal->AddNext(waitBeforeMove);
 
+    // Path BackupFromCornerPath = PathManager::GetInstance()->GetPath("BackupFromCorner");
+    // AutonNode* BackupFromCorner = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(BackupFromCornerPath), 
+    //         BackupFromCornerPath, 
+    //         false
+    //     )
+    // );
 
+    // waitBeforeMove->AddNext(BackupFromCorner);
 
+    // AutonNode* moveLiftToScoringPosition = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 1800, 10));
 
+    // Path PlaceCornerGoalPath = PathManager::GetInstance()->GetPath("PlaceCornerGoal");
+    // AutonNode* PlaceCornerGoal = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(PlaceCornerGoalPath), 
+    //         PlaceCornerGoalPath, 
+    //         false
+    //     )
+    // );
 
+    // BackupFromCorner->AddNext(moveLiftToScoringPosition);
+    // BackupFromCorner->AddNext(PlaceCornerGoal);
 
+    // AutonNode* frontClawDropGoal = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
 
+    
+    // AutonNode* waitBeforeLeavingPlatform = new AutonNode(0.1, new WaitAction(.5));
 
+    // PlaceCornerGoal->AddNext(frontClawDropGoal);
+    // PlaceCornerGoal->AddNext(waitBeforeLeavingPlatform);
+    
+    // AutonNode* waitBeforeLower = new AutonNode(0.2, new WaitAction(.2));
+
+    // Path BackupFromPlatformPath = PathManager::GetInstance()->GetPath("BackupFromPlatform");
+    // AutonNode* BackupFromPlatform = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(BackupFromPlatformPath), 
+    //         BackupFromPlatformPath, 
+    //         false
+    //     )
+    // );
+
+    // // AutonNode* liftAboveRings = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 700, 10));
+
+    // waitBeforeLeavingPlatform->AddNext(BackupFromPlatform);
+    // waitBeforeLeavingPlatform->AddNext(waitBeforeLower);
     
 
 
+    // AutonNode* liftGetDown = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 275, 10));
+
+    // waitBeforeLower->AddNext(liftGetDown);
+
+    // Path CollectRingsOnReturnPath = PathManager::GetInstance()->GetPath("CollectRingsOnReturn");
+    // AutonNode* CollectRingsOnReturn = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(CollectRingsOnReturnPath), 
+    //         CollectRingsOnReturnPath, 
+    //         false
+    //     )
+    // );
+
+    // AutonNode* startConveyor = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
+
+    // BackupFromPlatform->AddNext(startConveyor);
+    // BackupFromPlatform->AddNext(CollectRingsOnReturn);
+    // BackupFromPlatform->AddNext(liftAboveRings);
+
+    // // Path BackupFromRingLinePath = PathManager::GetInstance()->GetPath("BackupFromRingLine");
+    // // AutonNode* BackupFromRingLine = new AutonNode(
+    // //     10, 
+    // //     new FollowPathAction(
+    // //         m_driveNode, 
+    // //         m_odomNode, 
+    // //         new TankPathPursuit(BackupFromRingLinePath), 
+    // //         BackupFromRingLinePath, 
+    // //         false
+    // //     )
+    // // );
     
+    // //CollectRingsOnReturn->AddNext(BackupFromRingLine);
+
+    // Path PreloadPickupPath = PathManager::GetInstance()->GetPath("PreloadPickup");
+    // AutonNode* PreloadPickup = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(PreloadPickupPath), 
+    //         PreloadPickupPath, 
+    //         false
+    //     )
+    // );
+
+    // CollectRingsOnReturn->AddNext(PreloadPickup);
     
-    AutonNode* raiseAboveWall = new AutonNode(1., new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
+    // AutonNode* liftAboveWall = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 1800, 10));
 
-    GoCorner->AddNext(raiseAboveWall);
+    // PreloadPickup->AddNext(liftAboveWall);
 
-    Path ResetPosePath = PathManager::GetInstance()->GetPath("ResetPose");
-    AutonNode* ResetPose = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(ResetPosePath), 
-            ResetPosePath, 
-            false
-        )
-    );
+    // AutonNode* waitUntilLift = new AutonNode(0.1, new WaitAction(.5));
 
-    raiseAboveWall->AddNext(ResetPose);
+    // liftAboveWall->AddNext(waitUntilLift);
 
-    
-    AutonNode* Wait8 = new AutonNode(0.5, new WaitAction(0.5));
+    // Path WallAlignPath = PathManager::GetInstance()->GetPath("WallAlign");
+    // AutonNode* WallAlign = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(WallAlignPath), 
+    //         WallAlignPath, 
+    //         false
+    //     )
+    // );
 
-    ResetPose->AddNext(Wait8);
-
-    // Pose currentPose = m_odomNode->getCurrentPose();
-    // Pose resetPose(Vector2d(-64.5, currentPose.position.y()), currentPose.angle);
-
-    //m_odomNode->setCurrentPose(resetPose);
+    // waitUntilLift->AddNext(WallAlign);
 
 
-    Path BackupFromResetPath = PathManager::GetInstance()->GetPath("BackupFromReset");
-    AutonNode* BackupFromReset = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BackupFromResetPath), 
-            BackupFromResetPath, 
-            true
-        )
-    );
+    // Path BackupFromPreloadPickupPath = PathManager::GetInstance()->GetPath("BackupFromPreloadPickup");
+    // AutonNode* BackupFromPreloadPickup = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(BackupFromPreloadPickupPath), 
+    //         BackupFromPreloadPickupPath, 
+    //         true
+    //     )
+    // );
 
+    // WallAlign->AddNext(BackupFromPreloadPickup);
 
-    AutonNode* putDownLift = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 275, 10));
+    // Path BuddyClimbPath = PathManager::GetInstance()->GetPath("BuddyClimb");
+    // AutonNode* BuddyClimb = new AutonNode(
+    //     10, 
+    //     new FollowPathAction(
+    //         m_driveNode, 
+    //         m_odomNode, 
+    //         new TankPathPursuit(BuddyClimbPath), 
+    //         BuddyClimbPath, 
+    //         false
+    //     )
+    // );
 
-    Wait8->AddNext(BackupFromReset);
-    BackupFromReset->AddNext(putDownLift);
+    // AutonNode* stopConveyor = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, 0));
 
-    Path AlignWithCornerPath = PathManager::GetInstance()->GetPath("AlignWithCorner");
-    AutonNode* AlignWithCorner = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(AlignWithCornerPath), 
-            AlignWithCornerPath, 
-            false
-        )
-    );
+    // AutonNode* liftDown = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 270, 10));
 
-
-    putDownLift->AddNext(AlignWithCorner);
-
-    AutonNode* frontClawCloseOnNeutralGoal = new AutonNode(0.1, new UseClawAction(m_frontClawNode, true));
-    AlignWithCorner->AddNext(frontClawCloseOnNeutralGoal);
-
-    AutonNode* waitBeforeMove = new AutonNode(0.5, new WaitAction(.5));
-    frontClawCloseOnNeutralGoal->AddNext(waitBeforeMove);
-
-    Path BackupFromCornerPath = PathManager::GetInstance()->GetPath("BackupFromCorner");
-    AutonNode* BackupFromCorner = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BackupFromCornerPath), 
-            BackupFromCornerPath, 
-            false
-        )
-    );
-
-    waitBeforeMove->AddNext(BackupFromCorner);
-
-    AutonNode* moveLiftToScoringPosition = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 1800, 10));
-
-    Path PlaceCornerGoalPath = PathManager::GetInstance()->GetPath("PlaceCornerGoal");
-    AutonNode* PlaceCornerGoal = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(PlaceCornerGoalPath), 
-            PlaceCornerGoalPath, 
-            false
-        )
-    );
-
-    BackupFromCorner->AddNext(moveLiftToScoringPosition);
-    BackupFromCorner->AddNext(PlaceCornerGoal);
-
-    AutonNode* frontClawDropGoal = new AutonNode(0.1, new UseClawAction(m_frontClawNode, false));
-
-    
-    AutonNode* waitBeforeLeavingPlatform = new AutonNode(0.1, new WaitAction(.5));
-
-    PlaceCornerGoal->AddNext(frontClawDropGoal);
-    PlaceCornerGoal->AddNext(waitBeforeLeavingPlatform);
-
-    Path BackupFromPlatformPath = PathManager::GetInstance()->GetPath("BackupFromPlatform");
-    AutonNode* BackupFromPlatform = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BackupFromPlatformPath), 
-            BackupFromPlatformPath, 
-            false
-        )
-    );
-
-    AutonNode* liftAboveRings = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 700, 10));
-
-    waitBeforeLeavingPlatform->AddNext(BackupFromPlatform);
-    
-
-    Path CollectRingsOnReturnPath = PathManager::GetInstance()->GetPath("CollectRingsOnReturn");
-    AutonNode* CollectRingsOnReturn = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(CollectRingsOnReturnPath), 
-            CollectRingsOnReturnPath, 
-            false
-        )
-    );
-
-    AutonNode* startConveyor = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode));
-
-    BackupFromPlatform->AddNext(startConveyor);
-    BackupFromPlatform->AddNext(CollectRingsOnReturn);
-    BackupFromPlatform->AddNext(liftAboveRings);
-
-    Path BackupFromRingLinePath = PathManager::GetInstance()->GetPath("BackupFromRingLine");
-    AutonNode* BackupFromRingLine = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BackupFromRingLinePath), 
-            BackupFromRingLinePath, 
-            false
-        )
-    );
-    
-    CollectRingsOnReturn->AddNext(BackupFromRingLine);
-
-    Path PreloadPickupPath = PathManager::GetInstance()->GetPath("PreloadPickup");
-    AutonNode* PreloadPickup = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(PreloadPickupPath), 
-            PreloadPickupPath, 
-            false
-        )
-    );
-
-    BackupFromRingLine->AddNext(PreloadPickup);
-    
-    AutonNode* liftAboveWall = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 1800, 10));
-
-    PreloadPickup->AddNext(liftAboveWall);
-
-    AutonNode* waitUntilLift = new AutonNode(0.1, new WaitAction(.5));
-
-    liftAboveWall->AddNext(waitUntilLift);
-
-    Path WallAlignPath = PathManager::GetInstance()->GetPath("WallAlign");
-    AutonNode* WallAlign = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(WallAlignPath), 
-            WallAlignPath, 
-            false
-        )
-    );
-
-    waitUntilLift->AddNext(WallAlign);
-
-
-    Path BackupFromPreloadPickupPath = PathManager::GetInstance()->GetPath("BackupFromPreloadPickup");
-    AutonNode* BackupFromPreloadPickup = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BackupFromPreloadPickupPath), 
-            BackupFromPreloadPickupPath, 
-            true
-        )
-    );
-
-    WallAlign->AddNext(BackupFromPreloadPickup);
-
-    Path BuddyClimbPath = PathManager::GetInstance()->GetPath("BuddyClimb");
-    AutonNode* BuddyClimb = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BuddyClimbPath), 
-            BuddyClimbPath, 
-            false
-        )
-    );
-
-    AutonNode* stopConveyor = new AutonNode(0.1, new RollerIntakeAction(m_intakeNode, 0));
-
-    AutonNode* liftDown = new AutonNode(0.1, new MoveLiftToPositionAction(m_liftNode, 270, 10));
-
-    BackupFromPreloadPickup->AddNext(BuddyClimb);
-    BackupFromPreloadPickup->AddNext(stopConveyor);
-    BackupFromPreloadPickup->AddNext(liftDown);
+    // BackupFromPreloadPickup->AddNext(BuddyClimb);
+    // BackupFromPreloadPickup->AddNext(stopConveyor);
+    // BackupFromPreloadPickup->AddNext(liftDown);
 
 //=======================================================================================================================================================================
 }                  

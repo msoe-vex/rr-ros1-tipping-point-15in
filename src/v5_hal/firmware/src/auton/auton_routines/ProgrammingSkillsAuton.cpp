@@ -281,27 +281,164 @@ void ProgrammingSkillsAuton::AddNodes() {
 
     PlaceBlueDrop->AddNext(dropBlueDrop);
 
-    Path BlueDropBackPath = PathManager::GetInstance()->GetPath("BlueDropBack");
-    AutonNode* BlueDropBack = new AutonNode(
+    AutonNode* LowerLift = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 700, 10, false));
+
+    AutonNode* Wait7 = new AutonNode(0.5, new WaitAction(0.5));
+
+    Path ReturnToHomeSidePath = PathManager::GetInstance()->GetPath("ReturnToHomeSide");
+    AutonNode* ReturnToHomeSide = new AutonNode(
         10, 
         new FollowPathAction(
             m_driveNode, 
             m_odomNode, 
             new TankPathPursuit(
-                BlueDropBackPath), 
-                BlueDropBackPath, 
+                ReturnToHomeSidePath), 
+                ReturnToHomeSidePath, 
                 false
             )
         );
 
-    dropBlueDrop->AddNext(BlueDropBack);
+    dropBlueDrop->AddNext(Wait7);
+    dropBlueDrop->AddNext(ReturnToHomeSide);
+    Wait7->AddNext(LowerLift);
 
 
+    Path GoPreloadPath = PathManager::GetInstance()->GetPath("GoPreload");
+    AutonNode* GoPreload = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(
+                GoPreloadPath), 
+                GoPreloadPath, 
+                false
+            )
+        );
 
+    ReturnToHomeSide->AddNext(GoPreload);
 
+    AutonNode* preloads1 = getPreloadsSequence(GoPreload, m_driveNode, m_odomNode);
 
-
+    AutonNode* preloads2 = getPreloadsSequence(preloads1, m_driveNode, m_odomNode);
     
+    AutonNode* preloads3 = getPreloadsSequence(preloads2, m_driveNode, m_odomNode);
+
+    Path DropRedPath = PathManager::GetInstance()->GetPath("DropRed");
+    AutonNode* DropRed = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(
+                DropRedPath), 
+                DropRedPath, 
+                false
+            )
+        );
+
+    preloads3->AddNext(DropRed);
+
+    AutonNode* dropRedGoal = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_DOWN_CLAW_OPEN));
+    DropRed->AddNext(dropRedGoal);
+
+    AutonNode* LowerLiftToRed = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10, false));
+
+    AutonNode* Wait8 = new AutonNode(3., new WaitAction(3.));
+
+    Path UEPath = PathManager::GetInstance()->GetPath("UE");
+    AutonNode* UE = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(
+                UEPath), 
+                UEPath, 
+                false
+            )
+        );
+    dropRedGoal->AddNext(Wait8);
+    dropRedGoal->AddNext(UE);
+
+    Wait8->AddNext(LowerLiftToRed);
+
+    AutonNode* pickupRed = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
+
+    UE->AddNext(pickupRed);
+
+    AutonNode* Wait9 = new AutonNode(.5, new WaitAction(.5));
+    
+    pickupRed->AddNext(Wait9);
+
+    AutonNode* RaiseForRings = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 700, 10, true));
+
+    Wait9->AddNext(RaiseForRings);
+
+    Path PrepareRedPlatformPath = PathManager::GetInstance()->GetPath("PrepareRedPlatform");
+    AutonNode* PrepareRedPlatform = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(
+                PrepareRedPlatformPath), 
+                PrepareRedPlatformPath, 
+                false
+            )
+        );
+
+    RaiseForRings->AddNext(PrepareRedPlatform);
+
+    AutonNode* RaiseRed = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1800, 10, true));
+
+    PrepareRedPlatform->AddNext(RaiseRed);
+
+    Path RedPlatformPath = PathManager::GetInstance()->GetPath("RedPlatform");
+    AutonNode* RedPlatform = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(
+                RedPlatformPath), 
+                RedPlatformPath, 
+                false
+            )
+        );
+    
+    RaiseRed->AddNext(RedPlatform);
+
+    AutonNode* LowerRedOnPlatform = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1400, 10, true));
+
+    RedPlatform->AddNext(LowerRedOnPlatform);
+
+    AutonNode* releaseRed = new AutonNode(0.5, new UseClawAction(m_frontClawNode, true));
+
+    LowerRedOnPlatform->AddNext(releaseRed);
+
+    AutonNode* PullUp = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 1600, 10, true));
+
+    releaseRed->AddNext(PullUp);
+
+    Path PullOutPath = PathManager::GetInstance()->GetPath("PullOut");
+    AutonNode* PullOut = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(
+                PullOutPath), 
+                PullOutPath, 
+                false
+            )
+        );
+
+    PullUp->AddNext(PullOut);
+    
+
+
+
 
     // AutonNode* dropFront2 = new AutonNode(0.5, new MoveLiftToPositionAction(m_liftNode, 275, 10));
 

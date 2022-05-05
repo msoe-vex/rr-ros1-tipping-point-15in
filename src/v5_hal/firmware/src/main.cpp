@@ -30,6 +30,9 @@ ADIDigitalOutNode* backPivotPiston;
 ClawNode* wingArm;
 ADIDigitalOutNode* wingArmPiston;
 
+ADIDigitalOutNode* tipPiston;
+ClawNode* tipPistonNode;
+
 LiftNode* liftNode;
 MotorNode* leftLiftMotor;
 MotorNode* rightLiftMotor;
@@ -139,6 +142,9 @@ void initialize() {
 
 	wingArmPiston = new ADIDigitalOutNode(nodeManager, "wingArmPiston", {21, 'E'}, false);
 	wingArm = new ClawNode(nodeManager, "wingArm", controller, wingArmPiston, pros::E_CONTROLLER_DIGITAL_A);
+
+	tipPiston = new ADIDigitalOutNode(nodeManager, "tipPiston", 'D', false);
+	tipPistonNode = new ClawNode(nodeManager, "tipPistonNode", controller, tipPiston, pros::E_CONTROLLER_DIGITAL_X);
 
 	intakeMotor = new MotorNode(nodeManager, 9, "intakeMotor", false);
 	intakeNode = new IntakeNode(nodeManager, "intakeNode", controller, pros::E_CONTROLLER_DIGITAL_DOWN, pros::E_CONTROLLER_DIGITAL_LEFT, intakeMotor);

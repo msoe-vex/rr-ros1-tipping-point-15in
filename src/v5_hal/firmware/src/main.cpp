@@ -164,6 +164,16 @@ void initialize() {
 		intakeNode
 	);
 
+	NewRightAuton* newRightAuton = new NewRightAuton(
+		tankDriveNode, 
+		odomNode, 
+		frontClaw, 
+		wingArm, 
+		backClaw, 
+		liftNode, 
+		intakeNode
+	);
+
 	std::vector<Auton*> autons = {
 		leftAuton,
 		rightAuton	

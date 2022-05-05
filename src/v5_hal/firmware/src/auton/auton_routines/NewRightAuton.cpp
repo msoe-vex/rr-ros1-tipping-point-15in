@@ -1,7 +1,7 @@
-#include "auton/auton_routines/RightAuton.h"
+#include "auton/auton_routines/NewRightAuton.h"
 
-RightAuton::RightAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
-        Auton("15in Right Fast Auton", "/usd/pathMatchAuton2-15.json"), 
+NewRightAuton::NewRightAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode* frontClawNode, IClawNode* wingArm, BackClawNode* backClawNode, ILiftNode* liftNode, IRollerIntakeNode* intakeNode) : 
+        Auton("15in New Right Fast Auton", "/usd/pathMatchAuton3-15.json"), 
         m_driveNode(driveNode),
         m_odomNode(odomNode),
         m_frontClawNode(frontClawNode),
@@ -12,7 +12,7 @@ RightAuton::RightAuton(IDriveNode* driveNode, OdometryNode* odomNode, IClawNode*
     
 }
 
-void RightAuton::AddNodes() {
+void NewRightAuton::AddNodes() {
     // Set the starting position, as measured on the field
     Pose startingPose(Vector2d(33., 15.25), Rotation2Dd(M_PI_2+toRadians(36)));
     m_odomNode->setCurrentPose(startingPose); // was (31.917, 14.25)
@@ -24,10 +24,19 @@ void RightAuton::AddNodes() {
 
     AutonNode* wingArmDeploy = new AutonNode(0.1, new UseClawAction(m_wingArm, false));
 
-    //Original Parameters 41.5, 65,90
-    AutonNode* forward = new AutonNode(5, new DriveStraightAction(m_driveNode, m_odomNode, DRIVE_CONFIG, 41, 70, 90, .5));
+    Path StartToMidPath = PathManager::GetInstance()->GetPath("StartToMid");
+    AutonNode* StartToMid = new AutonNode(
+        10, 
+        new FollowPathAction(
+            m_driveNode, 
+            m_odomNode, 
+            new TankPathPursuit(StartToMidPath), 
+            StartToMidPath, 
+            false
+        )
+    );
 
-    deploy->AddNext(forward);
+    deploy->AddNext(StartToMid);
     deploy->AddNext(liftDownForCenterDash);
     deploy->AddNext(wingArmDeploy);
 
@@ -36,7 +45,7 @@ void RightAuton::AddNodes() {
     AutonNode* wingArmRetractGrab = new AutonNode(0.1, new UseClawAction(m_wingArm, true));
 
     //forward->AddNext(backward);
-    forward->AddNext(wingArmRetractGrab);
+    StartToMid->AddNext(wingArmRetractGrab);
 
     AutonNode* wingReleaseDelay = new AutonNode(0.7, new WaitAction(0.7));
     // // Helpful at dragging goal to side
@@ -56,7 +65,7 @@ void RightAuton::AddNodes() {
         )
     );
 
-    forward->AddNext(goalDragToColorGoal);
+    StartToMid->AddNext(goalDragToColorGoal);
     goalDragToColorGoal->AddNext(wingReleaseDelay);
     goalDragToColorGoal->AddNext(backClawOpen);
 
@@ -240,41 +249,5 @@ void RightAuton::AddNodes() {
     AutonNode* clawClose2 = new AutonNode(0.5, new UseClawAction(m_frontClawNode, false));
     ReturnToCornerGoal->AddNext(clawClose2);
 
-    Path BackupToMidPath = PathManager::GetInstance()->GetPath("BackupToMid");
-    AutonNode* BackupToMid = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BackupToMidPath), 
-            BackupToMidPath, 
-            false
-        )
-    );
-
-    clawClose2->AddNext(BackupToMid);
-
-    AutonNode* backClawOpen2 = new AutonNode(0.1, new SetBackClawStateAction(m_backClawNode, BackClawNode::PIVOT_DOWN_CLAW_OPEN));
-
-    BackupToMid->AddNext(backClawOpen2);
-
-    Path BackupToMidPath2 = PathManager::GetInstance()->GetPath("BackupToMid2");
-    AutonNode* BackupToMid2 = new AutonNode(
-        10, 
-        new FollowPathAction(
-            m_driveNode, 
-            m_odomNode, 
-            new TankPathPursuit(BackupToMidPath2), 
-            BackupToMidPath2, 
-            false
-        )
-    );
-
-    backClawOpen2->AddNext(BackupToMid2);
-
-
-
-
-    
 
 }

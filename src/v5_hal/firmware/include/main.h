@@ -84,6 +84,7 @@
 #include "auton/auton_routines/odomTest.h"
 #include "auton/auton_routines/testAuton.h"
 #include "auton/auton_routines/RightAuton.h"
+#include "auton/auton_routines/NewRightAuton.h"
 #include "auton/auton_routines/LeftAuton.h"
 
    /**
